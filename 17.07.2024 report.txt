@@ -1,0 +1,12 @@
+QRScannerPage Sınıfı oluşturuldu:
+-QR kod tarama için --> qr_code_scanner paketi kullanıldı.
+-Flaş açıp kapatma işlemleri için 'IconButton' kullanıldı.
+-Flaş'ın açık ya da kapalı olması durumlarında UI'ı güncelleyebilmek için 'BehaviorSubject' kullanıldı.
+-Kamerayı duraklatmak ve devam ettirmek için 'IconButton' kullanıldı.
+-Aynı şekilde kameranın açık ya da kapalı olması durumlarında UI'ı güncelleyebilmek için 'BehaviorSubject' kullanıldı.
+-Kullanıcıların manuel olarak kodu girebilecekleri bir 'TextFormField' eklendi ve şekillendirildi.
+-Navigasyon işleminde deneme amaçlı manuel olarak girilen kod için oluşturulan check tuşuna 'HomePage' ataması yapıldı.
+-Uygulamayı evde android bir telefondan test ettim:
+ -Flaş açma kapama tuşu beklendiği gibi çalışıyor, flaş açılıp kapandıkça duruma göre ikonlar da değişiyor.
+ -Kamera duraklat devam ettir tuşu hem işlevesel hem de UI açısından kamera durumunu doğru yansıtıyor
+ -Aktif olarak yönledirme yapan bir QR kod okutuldu, herhangi bir yönlendirme olmadı.
