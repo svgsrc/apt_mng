@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:talya_flutter/Global/constants.dart';
+import 'package:talya_flutter/Modules/Page/home-page.dart';
 import 'package:talya_flutter/Modules/Page/qr-scanner-page.dart';
+
+
 
 
 void main() => runApp(MyApp());
@@ -11,15 +15,11 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return  MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation:0.0,
-        ),
+      home: Scaffold(
+        backgroundColor: background,
+        body: QRScannerPage(),
       ),
-      home: QRScannerPage(),
       debugShowCheckedModeBanner: false,
-      title: 'QR Scanner',
     );
   }
 }
