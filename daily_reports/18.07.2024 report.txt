@@ -1,0 +1,13 @@
+QRScannerPage verimlilik ve temiz kod için biraz daha düzenlendi
+HomePage yazmak için json dosyasında mock data oluşturuldu:
+ -loadMockData fonksiyonuyla veriler listeye dönüştürüldü.
+ -json dosyasının okunması için rootBundle.loadString , ayrıştırma için json.decode ve güncelleme için setState   kullanıldı.
+ -AppBar apartman adı ve blok görüntülenecek şekilde yazıldı.
+ -Performans ve bellek için ListView.builder kullanıldı. 
+ -ApartmentCard sınıfı oluşturuldu; resident name, owner name,numperOfPeople ,plate number(şu an gözükmüyor) gibi bilgiler gösteriliyor.
+ -Her bir apartment card üzerine tıklanabilir ve detail sayfasına gidebilir, şu an için ortak bir detail sayfasına yönlendirildi.
+ -IconButton kullanılarak telefon araması, e-posta gönderimi ve SMS gönderimi gibi işlemler için placeholder(şu an işlevsiz) eklendi
+ -Owner name dışında kalan bilgiler için bold font kullanılırken owner name ayırt edilmesi açısından normal fontla yazıldı.
+ -Telefonun üst bildirim ekranıyla uygulama arasına koyulan top padding  etkisini götermiyor, SafeArea eklendi ama bir değişiklik olmadı. Yarın incelenecek.
+ -Verilerin yüklenme ve arayüzün performansı için HomePage kodlarında düzenlemeler yapılmalı.
+ -QRScannerPage e kod kısmı için validasyon eklendi fakat şimdilik geçersiz durumda. 

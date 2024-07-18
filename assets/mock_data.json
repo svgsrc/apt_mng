@@ -1,0 +1,126 @@
+{
+  "apartments": [
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 1,
+        "residentName": "ANIL ERDOĞAN",
+        "idNo": "11111111111",
+        "phone": "+905425686970",
+        "plateNumber:": "34 ABC 123",
+        "numberOfPeople": 4,
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "KEMAL ORAL",
+        "ownerPhone": "05332708476",
+        "balance": 0.00
+      }
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "EMEL EREĞLİ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 2,
+        "plateNumber:": "34 ABC 123",
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "BATU ÖZLER",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "AYŞE YILMAZ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 3,
+        "plateNumber:": "34 ABC 123",
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "AYŞE YILMAZ",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "AYŞE YILMAZ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 3,
+        "plateNumber:": "",
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "MEHMET YILMAZ",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "AYŞE YILMAZ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 3,
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "MEHMET YILMAZ",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "AYŞE YILMAZ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 3,
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "MEHMET YILMAZ",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+    },
+    {
+      "apartmentInfo": {
+        "apartmentName": "KINACI REZIDANS",
+        "blockName": "A BLOK",
+        "flatNumber": 2,
+        "residentName": "AYŞE YILMAZ",
+        "idNo": "22222222222",
+        "phone": "05326445397",
+        "numberOfPeople": 3,
+        "startDate": "01/06/2024",
+        "endDate": "01/07/2025",
+        "ownerName": "MEHMET YILMAZ",
+        "ownerPhone": "05332708477",
+        "balance": 50.00
+      }
+    }
+
+  ]
+}
+
