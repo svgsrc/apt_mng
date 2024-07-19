@@ -1,51 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:talya_flutter/Modules/Service/qr-scanner-service.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
 
-class QRScannerController {
-  final BehaviorSubject<String> scanData$ = BehaviorSubject<String>();
-  final BehaviorSubject<bool> flash$ = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> pause$ = BehaviorSubject<bool>();
-
-  QRViewController? qrViewController;
-
-  QRScannerController() {
-    flash$.add(false);
-    pause$.add(false);
-  }
-
-  void dispose() {
-    qrViewController?.dispose();
-    scanData$.close();
-    flash$.close();
-    pause$.close();
-  }
-
-  void onQRViewCreated(QRViewController controller) {
-    qrViewController = controller;
-    controller.scannedDataStream.listen((scanData) {
-      scanData$.add(scanData.code!);
-    });
-  }
-
-  void toggleFlash() {
-    if (qrViewController != null) {
-      qrViewController!.toggleFlash();
-      flash$.add(!flash$.value);
-    }
-  }
-
-  void togglePause() {
-    pause$.add(!pause$.value);
-    if (pause$.value) {
-      qrViewController?.pauseCamera();
-    } else {
-      qrViewController?.resumeCamera();
-    }
-  }
-}
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -74,11 +32,11 @@ class _QRScannerPageState extends State<QRScannerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child:Container(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+
+      body:Container(
+        padding:  EdgeInsets.only(top:MediaQuery.of(context).padding.top),
         width: double.infinity,
-        margin: const EdgeInsets.only(right: 10, left: 10),
+        margin: const EdgeInsets.only(right: 10, left: 10,top:10),
           child: Column(
             children: [
               Expanded(
@@ -105,14 +63,20 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           stream: qrScannerController.pause$.stream,
                           builder: (context, snapshot) {
                             bool isPaused = snapshot.data ?? false;
-                            return IconButton(
-                              onPressed: () {
-                                qrScannerController.togglePause();
-                              },
-                              icon: Icon(
-                                isPaused ? Icons.play_arrow : Icons.pause,
-                                color: primary,
-                                size: 30,
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: primary, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  qrScannerController.togglePause();
+                                },
+                                icon: Icon(
+                                  isPaused ? Icons.play_arrow : Icons.pause,
+                                  color: primary,
+                                  size: 30,
+                                ),
                               ),
                             );
                           },
@@ -126,14 +90,20 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           stream: qrScannerController.flash$.stream,
                           builder: (context, snapshot) {
                             bool isFlashOn = snapshot.data ?? false;
-                            return IconButton(
-                              onPressed: () {
-                                qrScannerController.toggleFlash();
-                              },
-                              icon: Icon(
-                                isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
-                                color: primary,
-                                size: 30,
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: primary, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  qrScannerController.toggleFlash();
+                                },
+                                icon: Icon(
+                                  isFlashOn ? Icons.flashlight_on : Icons.flashlight_off,
+                                  color: primary,
+                                  size: 30,
+                                ),
                               ),
                             );
                           },
@@ -153,9 +123,6 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: 'Enter the code here',
-                            hintStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -175,23 +142,26 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        {
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: primary, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => HomePage(),
                             ),
                           );
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.check,
-                        color: primary,
-                        size: 40,
+                        },
+                        icon: const Icon(
+                          Icons.check,
+                          color: primary,
+                        ),
                       ),
-                    ),
+                    )
 
                   ],
                 ),
@@ -199,7 +169,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
             ],
           ),
         ),
-    )
+
     );
   }
 }

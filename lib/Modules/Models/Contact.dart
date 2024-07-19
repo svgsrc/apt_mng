@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
+
+final String jsonData = '''
 {
   "apartments": [
     {
@@ -125,4 +129,12 @@
 
   ]
 }
+''';
 
+List<Contact> parseContacts(String jsonData) {
+  final data = json.decode(jsonData);
+  final apartments = data['apartments'] as List;
+  return apartments.map((json) => Contact.fromJson(json)).toList();
+}
+
+final List<Contact> contacts = parseContacts(jsonData);
