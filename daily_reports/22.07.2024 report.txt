@@ -1,0 +1,4 @@
+QRCodeScannerPagede yer alan QrCode ve manuel olarak girilen kodlar için shared prefs eklendi.
+HomePage deki IconButton kullanılarak telefon araması, e-posta gönderimi ve SMS gönderimi gibi işlemlerin fonksiyonları tamamlandı, android telefonda test edildi. Sorunsuz bir şekilde çalışıyopr.
+DetialPage düzenlendi dialog sayfası oluşturuldu
+Genel olarak kodlar dosyalama ve verimlilik açısından düzenlendi.
