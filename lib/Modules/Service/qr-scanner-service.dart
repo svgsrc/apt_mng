@@ -1,45 +1,40 @@
+
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QRScannerController {
-  final BehaviorSubject<String> scanData$ = BehaviorSubject<String>();
-  final BehaviorSubject<bool> flash$ = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> pause$ = BehaviorSubject<bool>();
-
-  QRViewController? qrViewController;
-
-  QRScannerController() {
-    flash$.add(false);
-    pause$.add(false);
-  }
-
-  void dispose() {
-    qrViewController?.dispose();
-    scanData$.close();
-    flash$.close();
-    pause$.close();
-  }
+  final pause$ = BehaviorSubject<bool>.seeded(false);
+  final flash$ = BehaviorSubject<bool>.seeded(false);
 
   void onQRViewCreated(QRViewController controller) {
-    qrViewController = controller;
-    controller.scannedDataStream.listen((scanData) {
-      scanData$.add(scanData.code!);
+    controller.scannedDataStream.listen((scanData) async {
+      await saveCode(scanData.code.toString());
     });
   }
 
-  void toggleFlash() {
-    if (qrViewController != null) {
-      qrViewController!.toggleFlash();
-      flash$.add(!flash$.value);
-    }
+  Future<void> saveCode(String code) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> savedCodes = prefs.getStringList('saved_codes') ?? [];
+    savedCodes.add(code);
+    await prefs.setStringList('saved_codes', savedCodes);
+  }
+
+  Future<List<String>> getSavedCodes() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList('saved_codes') ?? [];
   }
 
   void togglePause() {
     pause$.add(!pause$.value);
-    if (pause$.value) {
-      qrViewController?.pauseCamera();
-    } else {
-      qrViewController?.resumeCamera();
-    }
+  }
+
+  void toggleFlash() {
+    flash$.add(!flash$.value);
+  }
+
+  void dispose() {
+    pause$.close();
+    flash$.close();
   }
 }

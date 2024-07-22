@@ -4,6 +4,7 @@ import 'package:talya_flutter/Modules/Page/detail-page.dart';
 import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
 
 
+
 class ApartmentCard extends StatelessWidget {
   final Contact contact;
 
@@ -17,6 +18,9 @@ class ApartmentCard extends StatelessWidget {
     String ownerName = apartmentInfo.ownerName;
     String plateNumber = apartmentInfo.plateNumber;
     int numberOfPeople = apartmentInfo.numberOfPeople;
+    String email= apartmentInfo.email;
+
+
 
     return Stack(
       children: [
@@ -78,7 +82,7 @@ class ApartmentCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailPage(contact: contact),
+                          builder: (context) => DetailPage( contact : contact),
                         ),
                       );
                     },
@@ -98,7 +102,7 @@ class ApartmentCard extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.email, color: Colors.blue),
                           onPressed: () {
-                            // Send an email to the resident
+                            _sendEmail(apartmentInfo.email);
                           },
                         ),
                         IconButton(
