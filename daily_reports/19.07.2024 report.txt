@@ -1,0 +1,6 @@
+QRScannerPagedeki butonlara border eklendi.
+Stack kullanılarak flat numbers değerleri cartların dışına alındı.
+PlateNumber düzeltildi.
+launch(url) kullanılarak telefon ve mesaj gönderme butonlarına atama yapıldı
+DetailsPage tasarlandı , mobil kısımda bilgiler kısmına başlandı, listtilelar ve ödeme kısmına geçilmedi.
+Kodlar genel olarak dosyalama açısından düzenlendi.

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget{
     return  MaterialApp(
       home: Scaffold(
         backgroundColor: background,
-        body: HomePage(),
+        body: QRScannerPage(),
       ),
       debugShowCheckedModeBanner: false,
     );
