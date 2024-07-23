@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Widgets/apartment-card.dart';
-import '../Models/ApartmentInfo.dart';
+import '../Models/Contact.dart';
 
 
 
@@ -69,6 +69,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 

@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+
+import 'FeeInfo.dart';
 
 class ApartmentInfo {
   final String apartmentName;
@@ -15,7 +16,6 @@ class ApartmentInfo {
   final String ownerName;
   final String ownerPhone;
   final double balance;
-
 
 
 
@@ -39,7 +39,6 @@ class ApartmentInfo {
   });
 
   factory ApartmentInfo.fromJson(Map<String, dynamic> json) {
-
     return ApartmentInfo(
       apartmentName: json['apartmentName'] ?? 'N/A',
       blockName: json['blockName'] ?? 'N/A',
@@ -56,6 +55,7 @@ class ApartmentInfo {
       ownerPhone: json['ownerPhone'] ?? 'N/A',
       balance: (json['balance'] ?? 0.0).toDouble(),
 
+
     );
   }
 }
@@ -63,14 +63,4 @@ class ApartmentInfo {
 
 
 
-class Contact {
-  final ApartmentInfo apartmentInfo;
 
-  Contact({required this.apartmentInfo});
-
-  factory Contact.fromJson(Map<String, dynamic> json) {
-    return Contact(
-      apartmentInfo: ApartmentInfo.fromJson(json),
-    );
-  }
-}

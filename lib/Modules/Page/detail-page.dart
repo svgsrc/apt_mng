@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
 import 'package:talya_flutter/Modules/Models/Contact.dart';
 import 'package:talya_flutter/Global/constants.dart';
+import 'package:talya_flutter/Modules/Models/FeeInfo.dart';
+import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
 
 class DetailPage extends StatelessWidget{
   final Contact contact;
@@ -26,11 +27,10 @@ class DetailPage extends StatelessWidget{
 
 
 
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: Text(contacts == null ? 'Loading...' :  apartmentInfo.residentName),
+        title: Text(contact == null ? 'Loading...' :  apartmentInfo.residentName),
         centerTitle: true,
         titleTextStyle: TextStyle(color: appText, fontSize: 20),
         leading: Container(
@@ -56,7 +56,7 @@ class DetailPage extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                       flatNumber.toString(),
+                      flatNumber.toString(),
                       style:const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -91,21 +91,21 @@ class DetailPage extends StatelessWidget{
                       ),
                     ),
                     if(ownerName!= residentName)
-                    Text(
-                      ownerName,
-                      style:const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                      Text(
+                        ownerName,
+                        style:const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
                     if(ownerName!= residentName)
-                    Text(
-                      ownerPhone,
-                      style:const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                      Text(
+                        ownerPhone,
+                        style:const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
                     Text(
                       plateNumber,
                       style:const TextStyle(

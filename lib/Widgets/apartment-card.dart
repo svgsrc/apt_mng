@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
-import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
+import 'package:talya_flutter/Modules/Models/Contact.dart';
 
 
 
@@ -18,7 +18,6 @@ class ApartmentCard extends StatelessWidget {
     String ownerName = apartmentInfo.ownerName;
     String plateNumber = apartmentInfo.plateNumber;
     int numberOfPeople = apartmentInfo.numberOfPeople;
-    String email= apartmentInfo.email;
 
 
 

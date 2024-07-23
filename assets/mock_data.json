@@ -9,7 +9,7 @@
         "idNo": "11111111111",
         "phone": "05425686970",
         "plateNumber": "34 ABC 123",
-        "email": "sevgisarica7@gmail.com",
+        "email": "example7@gmail.com",
         "numberOfPeople": 4,
         "startDate": "01/06/2024",
         "endDate": "01/07/2025",
@@ -248,7 +248,8 @@
         }
       ]
     }
-
   ]
 }
+
+
 

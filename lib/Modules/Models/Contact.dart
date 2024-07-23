@@ -1,6 +1,20 @@
 import 'dart:convert';
 import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
 
+class Contact {
+  final ApartmentInfo apartmentInfo;
+
+
+  Contact({required this.apartmentInfo});
+
+  factory Contact.fromJson(Map<String, dynamic> json) {
+    return Contact(
+      apartmentInfo: ApartmentInfo.fromJson(json),
+
+    );
+  }
+}
+
 // JSON data
 final String jsonData = '''
 {
@@ -265,4 +279,3 @@ List<Contact> parseContacts(String jsonData) {
 }
 
 final List<Contact> contacts = parseContacts(jsonData);
-
