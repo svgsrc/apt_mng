@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Widgets/apartment-card.dart';
-import '../Models/Contact.dart';
+import 'package:talya_flutter/Service/api-service-flats.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 
 
@@ -13,59 +12,79 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Contact>? contacts;
+  late Stream<List<Apartment>> apartmentStream;
+  String title='Name and BlockName';
 
   @override
   void initState() {
     super.initState();
-    loadMockData();
+    apartmentStream= APIServiceFlats().fetchApartments();
   }
 
-  Future<void> loadMockData() async {
-    try {
-      final String response = await rootBundle.loadString('assets/mock_data.json');
-      final data = json.decode(response);
-      if (data != null && data is Map<String, dynamic> && data.containsKey('apartments')) {
-        setState(() {
-          contacts = (data['apartments'] as List)
-              .map((apartment) => Contact.fromJson(apartment['apartmentInfo'] ?? {}))
-              .toList();
-        });
-        print('Data loaded successfully: $contacts');
-      } else {
-        print('Invalid JSON structure: $data');
-      }
-    } catch (e) {
-      print('Error loading JSON: $e');
-    }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: Text(contacts == null ? 'Loading...' : contacts![0].apartmentInfo.apartmentName + ' ' + contacts![0].apartmentInfo.blockName),
+        title: StreamBuilder<List<Apartment>>(
+          stream: apartmentStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Apartment> apartments = snapshot.data!;
+              title = apartments[0].blockName;
+            }
+            return Text(title);
+          },
+        ),
         centerTitle: true,
-        titleTextStyle: TextStyle(color: appText, fontSize: 20),
+        titleTextStyle: const TextStyle(color: appText, fontSize: 20),
         leading: Container(
           margin: const EdgeInsets.all(10),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: appText),
+            icon: const Icon(Icons.arrow_back, color: appText),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
       ),
-      body: contacts == null ? Center(child: CircularProgressIndicator()) :
-      ListView.builder(
-        itemCount: contacts!.length,
-        itemBuilder: (context, index) {
-          var contact = contacts![index];
-          return ApartmentCard(contact: contact);
+
+      body: StreamBuilder<List<Apartment>>(
+        stream: apartmentStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState==ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(fontSize: 18),
+              ),
+            );
+          }else if(!snapshot.hasData || snapshot.data!.isEmpty){
+            return const Center(
+              child: Text(
+                'No data found',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          }
+          final apartments = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: apartments!.length,
+            itemBuilder: (context, index) {
+              return ApartmentCard(apartment: apartments[index]);
+            },
+          );
         },
       ),
+
     );
   }
 }

@@ -1,21 +1,21 @@
 
-class Fee{
+class FeeInfo{
   final String feeType;
   final double feeAmount;
   final String feeDate;
 
 
-  Fee({
+  FeeInfo({
     required this.feeType,
     required this.feeAmount,
     required this.feeDate,
 
   });
 
-  factory Fee.fromJson(Map<String, dynamic> json) {
-    return Fee(
+  factory FeeInfo.fromJson(Map<String, dynamic> json) {
+    return FeeInfo(
       feeType: json['feeType'] as String? ?? 'N/A',
-      feeAmount: (json['feeAmount'] as num).toDouble(),
+      feeAmount: (json['feeAmount'] ).toDouble(),
       feeDate: json['feeDate'] as String? ?? 'N/A',
 
     );

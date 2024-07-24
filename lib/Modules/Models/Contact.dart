@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'package:talya_flutter/Modules/Models/ApartmentInfo.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 class Contact {
-  final ApartmentInfo apartmentInfo;
+  final Apartment apartmentInfo;
 
 
   Contact({required this.apartmentInfo});
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
-      apartmentInfo: ApartmentInfo.fromJson(json),
+      apartmentInfo: Apartment.fromJson(json),
 
     );
   }

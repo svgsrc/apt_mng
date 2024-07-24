@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
 import 'package:talya_flutter/Modules/Models/Contact.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 
 
 class ApartmentCard extends StatelessWidget {
-  final Contact contact;
+  final Apartment apartment;
 
-  const ApartmentCard({super.key, required this.contact});
+  const ApartmentCard({super.key, required this.apartment});
 
   @override
   Widget build(BuildContext context) {
-    var apartmentInfo = contact.apartmentInfo;
-    int flatNumber = apartmentInfo.flatNumber;
-    String residentName = apartmentInfo.residentName;
-    String ownerName = apartmentInfo.ownerName;
-    String plateNumber = apartmentInfo.plateNumber;
-    int numberOfPeople = apartmentInfo.numberOfPeople;
+    int flatNumber = int.parse(apartment.flatNumber);
+    String contactName = apartment.contactName;
+    String ownerName = apartment.ownerName;
+    String plateNo = apartment.plateNo;
+    int numberOfPeople = apartment.numberOfPeople;
 
 
 
@@ -41,13 +41,13 @@ class ApartmentCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          residentName,
+                          contactName,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (residentName != ownerName)
+                        if (contactName != ownerName)
                           Text(
                             ownerName,
                             style: const TextStyle(
@@ -55,9 +55,9 @@ class ApartmentCard extends StatelessWidget {
                               fontWeight: FontWeight.normal,
                             ),
                           ),
-                        if (plateNumber != 'N/A')
+                        if (plateNo != 'N/A')
                           Text(
-                            plateNumber,
+                            plateNo,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class ApartmentCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailPage( contact : contact),
+                          builder: (context) => DetailPage( apartment: apartment),
                         ),
                       );
                     },
@@ -95,19 +95,19 @@ class ApartmentCard extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.phone, color: Colors.green),
                           onPressed: () {
-                            _makePhoneCall(apartmentInfo.phone);
+                            _makePhoneCall(apartment.phone);
                           },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.email, color: Colors.blue),
-                          onPressed: () {
-                            _sendEmail(apartmentInfo.email);
-                          },
-                        ),
+                       // IconButton(
+                        //  icon: const Icon(Icons.email, color: Colors.blue),
+                        // onPressed: () {
+                         //   _sendEmail(apartment.email);
+                        //  },
+                      //  ),
                         IconButton(
                           icon: const Icon(Icons.message, color: Colors.green),
                           onPressed: () {
-                            _sendSMS(apartmentInfo.phone);
+                            _sendSMS(apartment.phone);
                           },
                         ),
                       ],
@@ -166,4 +166,3 @@ class ApartmentCard extends StatelessWidget {
     }
   }
 }
-

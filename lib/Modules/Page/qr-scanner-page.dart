@@ -16,6 +16,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRScannerController qrScannerController;
   final TextEditingController _codeController = TextEditingController();
+  String responseMessage= '';
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
               flex: 4,
               child: QRView(
                 key: qrKey,
-                onQRViewCreated: qrScannerController.onQRViewCreated,
+                onQRViewCreated:(controller) => qrScannerController.onQRViewCreated(controller, context),
                 overlay: QrScannerOverlayShape(
                   borderColor: primary,
                   borderRadius: 10,
@@ -101,7 +102,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 qrScannerController.toggleFlash();
                               },
                               icon: Icon(
-                                isFlashOn ? Icons.flashlight_on : Icons.flashlight_off,
+                                isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
                                 color: primary,
                                 size: 30,
                               ),
@@ -153,7 +154,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       onPressed: () async {
                         if (_codeController.text.isNotEmpty) {
                           await qrScannerController.saveCode(_codeController.text);
-                          _codeController.clear();
+
                         }
                         Navigator.push(
                           context,
@@ -161,6 +162,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             builder: (context) => HomePage(),
                           ),
                         );
+
                       },
                       icon: const Icon(
                         Icons.check,
