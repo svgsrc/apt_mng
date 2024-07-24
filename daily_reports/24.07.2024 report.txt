@@ -1,0 +1,7 @@
+Yazılan prosedüre göre bir service oluşturuldu.(sadece flats için)
+ApartmentInfo modeli Apartment olarak değiştirildi ve prosedüre göre düzenlendi
+ScannerPage e service eklendi ama öbür sayfalara geçiş yapabilmek adına işlevsiz durumda
+Oluşturulan service homepage ve detailpage'e entegre edildi
+Entegrasyonlar için Stream ve Future Builder kullanıldı.
+Gönderilen datada mail adresi bulunmadığı için mail gönderme tuşu işlevsiz, dolayısıyla şimdilik UI'dan da kaldırıldı.
+ApartmentCard widgeti yazılan servise göre değiştirildi.

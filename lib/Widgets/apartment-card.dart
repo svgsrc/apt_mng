@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
-import 'package:talya_flutter/Modules/Models/Contact.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 
