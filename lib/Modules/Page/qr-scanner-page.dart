@@ -31,6 +31,14 @@ class _QRScannerPageState extends State<QRScannerPage> {
     super.dispose();
   }
 
+  void updateResponseMessage(String? newMessage){
+    if(newMessage != null){
+      setState(() {
+        responseMessage = newMessage;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

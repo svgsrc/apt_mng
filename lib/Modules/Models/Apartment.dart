@@ -14,7 +14,7 @@ class Apartment {
   final int balance;
   final String startDate;
   final String endDate;
-  final bool? isDisabled;
+  final bool isDisabled;
 
   Apartment({
     required this.id,
@@ -32,27 +32,27 @@ class Apartment {
     required this.balance,
     required this.startDate,
     required this.endDate,
-    this.isDisabled,
+    required this.isDisabled,
   });
 
   factory Apartment.fromJson(Map<String, dynamic> json) {
     return Apartment(
-      id: json['ID'],
-      hotelId: json['HOTELID'],
-      name: json['NAME'],
-      blockName: json['BLOCKNAME'],
-      flatNumber: json['FLATNUMBER'],
-      contactName: json['CONTACTNAME'],
-      phone: json['PHONE'],
-      idNo: json['IDNO'],
-      numberOfPeople: json['NUMBEROFPEOPLE'],
-      plateNo: json['PLATENO'],
-      ownerName: json['OWNERNAME'],
-      ownerPhone: json['OWNERPHONE'],
-      balance: json['BALANCE'],
-      startDate: json['STARTDATE'],
-      endDate: json['ENDDATE'],
-      isDisabled: json['ISDISABLED'],
+      id: json['ID'] ?? 0,
+      hotelId: json['HOTELID'] ?? 0,
+      name: json['NAME'] ?? '',
+      blockName: json['BLOCKNAME'] ?? '',
+      flatNumber: json['FLATNUMBER'] ?? '',
+      contactName: json['CONTACTNAME'] ?? '',
+      phone: json['PHONE']  ?? '',
+      idNo: json['IDNO'] ?? '',
+      numberOfPeople: json['NUMBEROFPEOPLE'] ?? 0,
+      plateNo: json['PLATENO'] ?? '',
+      ownerName: json['OWNERNAME'] ?? '',
+      ownerPhone: json['OWNERPHONE'] ?? '',
+      balance: json['BALANCE'] ?? 0,
+      startDate: json['STARTDATE'] ?? '',
+      endDate: json['ENDDATE'] ?? '',
+      isDisabled: json['ISDISABLED'] ?? false,
     );
   }
 }

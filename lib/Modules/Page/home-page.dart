@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Widgets/apartment-card.dart';
-import 'package:talya_flutter/Service/api-service-flats.dart';
+import 'package:talya_flutter/Service/api-service.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 
@@ -13,15 +13,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Stream<List<Apartment>> apartmentStream;
-  String title='Name and BlockName';
+  APIService apiService = APIService();
 
   @override
   void initState() {
     super.initState();
-    apartmentStream= APIServiceFlats().fetchApartments();
+    apartmentStream= apiService.fetchApartmentsBroadcast();
   }
-
-
 
 
   @override
@@ -32,11 +30,20 @@ class _HomePageState extends State<HomePage> {
         title: StreamBuilder<List<Apartment>>(
           stream: apartmentStream,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Apartment> apartments = snapshot.data!;
-              title = apartments[0].blockName;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Loading...');
+            } else if (snapshot.hasError) {
+              return const Text('Error loading data');
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Text('No Data');
+            } else {
+              final apartments = snapshot.data!;
+              final apartment = apartments.isNotEmpty ? apartments.first : null;
+
+              return Text( apartment!.name + ' ' + apartment.blockName,
+                style: const TextStyle(color: appText, fontSize: 20),
+              );
             }
-            return Text(title);
           },
         ),
         centerTitle: true,
@@ -51,7 +58,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-
       body: StreamBuilder<List<Apartment>>(
         stream: apartmentStream,
         builder: (context, snapshot) {
@@ -77,7 +83,7 @@ class _HomePageState extends State<HomePage> {
           final apartments = snapshot.data!;
 
           return ListView.builder(
-            itemCount: apartments!.length,
+            itemCount: apartments.length,
             itemBuilder: (context, index) {
               return ApartmentCard(apartment: apartments[index]);
             },

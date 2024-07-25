@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
+import 'package:talya_flutter/Global/constants.dart';
 
 class QRScannerController {
   final pause$ = BehaviorSubject<bool>.seeded(false);
@@ -21,7 +22,7 @@ class QRScannerController {
   }
 
   Future<void> sendPostRequest(String code) async {
-    final url= 'https://4001.hoteladvisor.net';
+
 
     final Map<String, dynamic> requestBody={
       "Action": "Execute",
@@ -33,13 +34,10 @@ class QRScannerController {
     };
 
     try {
-      final response = await http.post(Uri.parse(url),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(requestBody),
-      );
+      final response = await http.post(Uri.parse(url),);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        List<dynamic> data = json.decode(response.body);
         print("Data: $data");
       } else {
         print("Error: ${response.statusCode}");

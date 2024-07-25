@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talya_flutter/Service/api-service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
@@ -12,13 +13,17 @@ class ApartmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int flatNumber = int.parse(apartment.flatNumber);
-    String contactName = apartment.contactName;
-    String ownerName = apartment.ownerName;
-    String plateNo = apartment.plateNo;
-    int numberOfPeople = apartment.numberOfPeople;
+    int? flatNumber;
+    String contactName = apartment.contactName ?? 'Unknown';
+    String ownerName = apartment.ownerName ?? 'Unknown';
+    String plateNo = apartment.plateNo ?? 'N/A';
+    int numberOfPeople = apartment.numberOfPeople ?? 0;
 
-
+    try {
+      flatNumber = int.parse(apartment.flatNumber ?? '0');
+    } catch (e) {
+      flatNumber = 0;
+    }
 
     return Stack(
       children: [
@@ -76,13 +81,24 @@ class ApartmentCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage( apartment: apartment),
-                        ),
-                      );
+                    onTap: () async {
+                      final apiService=APIService();
+                      final apartmentId=apartment.id;
+                      
+                      try{
+                        final fees= await apiService.fetchFees(apartmentId).first;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                              apartment: apartment,
+                              fees: fees,
+                            ),
+                          ),
+                        );
+                      }catch(e){
+                        print('Failed to load fees: $e');
+                      }
                     },
                   ),
                   const Divider(),
@@ -97,12 +113,12 @@ class ApartmentCard extends StatelessWidget {
                             _makePhoneCall(apartment.phone);
                           },
                         ),
-                       // IconButton(
-                        //  icon: const Icon(Icons.email, color: Colors.blue),
-                        // onPressed: () {
-                         //   _sendEmail(apartment.email);
-                        //  },
-                      //  ),
+                        IconButton(
+                          icon: const Icon(Icons.email, color: Colors.blue),
+                        onPressed: () {
+                            // _sendEmail(apartment.email);
+                          },
+                        ),
                         IconButton(
                           icon: const Icon(Icons.message, color: Colors.green),
                           onPressed: () {
@@ -147,14 +163,14 @@ class ApartmentCard extends StatelessWidget {
       throw 'Could not launch $url';
     }
   }
-  Future<void> _sendEmail(String email) async {
-    final url = 'mailto:$email';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // Future<void> _sendEmail(String email) async {
+  //   final url = 'mailto:$email';
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   Future<void> _sendSMS(String phoneNumber) async {
     final url = 'sms:$phoneNumber';
