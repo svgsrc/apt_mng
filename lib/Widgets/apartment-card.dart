@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
@@ -8,8 +9,9 @@ import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 class ApartmentCard extends StatelessWidget {
   final Apartment apartment;
+  final APIService apiService= GetIt.I<APIService>();
 
-  const ApartmentCard({super.key, required this.apartment});
+  ApartmentCard({super.key, required this.apartment});
 
   @override
   Widget build(BuildContext context) {
@@ -71,22 +73,21 @@ class ApartmentCard extends StatelessWidget {
                     ),
                     subtitle: Row(
                       children: [
-                        const Icon(Icons.person),
+                        const Icon(Icons.person,color:Colors.black),
                         const SizedBox(width: 4),
                         Text(
                           numberOfPeople.toString(),
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 18,color:Colors.black,fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                     onTap: () async {
-                      final apiService=APIService();
                       final apartmentId=apartment.id;
-                      
+
                       try{
-                        final fees= await apiService.fetchFees(apartmentId).first;
+                        final fees = await apiService.fetchFees(apartmentId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -115,7 +116,7 @@ class ApartmentCard extends StatelessWidget {
                         ),
                         IconButton(
                           icon: const Icon(Icons.email, color: Colors.blue),
-                        onPressed: () {
+                          onPressed: () {
                             // _sendEmail(apartment.email);
                           },
                         ),
@@ -134,8 +135,8 @@ class ApartmentCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 10.0,
-          top: 5.0,
+          left: 9.0,
+          top: 8.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(

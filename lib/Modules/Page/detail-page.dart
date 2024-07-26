@@ -4,14 +4,15 @@ import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
 import 'package:talya_flutter/Service/api-service.dart';
-import 'package:intl/intl.dart';
+
 
 class DetailPage extends StatelessWidget {
   final Apartment apartment;
   final List<Fee>? fees;
-  final APIService apiService = APIService();
+
 
   DetailPage({required this.apartment, this.fees});
+
 
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
@@ -75,24 +76,24 @@ class DetailPage extends StatelessWidget {
                       ),
                     ),
                     Row(
-                      children:[
-                        Text(
-                          contactName,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        children:[
+                          Text(
+                            contactName,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 20),
-                        const Icon(Icons.people, size: 24),
-                        const SizedBox(width: 6),
-                        Text(
-                          '$numberOfPeople',
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
+                          const SizedBox(width: 20),
+                          const Icon(Icons.people, size: 24),
+                          const SizedBox(width: 6),
+                          Text(
+                            '$numberOfPeople',
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
 
-                      ]
+                        ]
                     ),
 
                     Text(
@@ -118,14 +119,14 @@ class DetailPage extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                    if(plateNo != null && plateNo != 'N/A')
-                    Text(
-                      plateNo,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    if(plateNo != 'N/A')
+                      Text(
+                        plateNo,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -151,58 +152,54 @@ class DetailPage extends StatelessWidget {
               ],
             ),
             const Divider(),
-            Expanded(
-              child: StreamBuilder<List<Fee>>(
-                stream: fetchFeesForApartment(apartment.id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No fees available'));
-                  } else {
-                    final fees = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: fees.length,
-                      itemBuilder: (context, index) {
-                        final fee = fees[index];
-                        return ListTile(
-                          title: Text(
-                            fee.feeTypeId.toString(),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            fee.paymentDate,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.normal),
-                          ),
-                          trailing: Text(
-                            '${fee.feeAmount} TL',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            _showCustomDialog(context);
-                          },
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ),
+           // Expanded(
+              // child: FutureBuilder(
+              //   future: fetchFees(),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return Center(child: CircularProgressIndicator());
+              //     } else if (snapshot.hasError) {
+              //       return Center(child: Text('Error: ${snapshot.error}'));
+              //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              //       return Center(child: Text('No fees available'));
+              //     } else {
+              //       final fees = snapshot.data!;
+              //       return ListView.builder(
+              //         itemCount: fees.length,
+              //         itemBuilder: (context, index) {
+              //           final fee = fees[index];
+              //           return ListTile(
+              //             title: Text(
+              //               fee.feeTypeId.toString(),
+              //               style: const TextStyle(
+              //                   fontSize: 16, fontWeight: FontWeight.bold),
+              //             ),
+              //             subtitle: Text(
+              //               fee.paymentDate,
+              //               style: const TextStyle(
+              //                   fontSize: 16, fontWeight: FontWeight.normal),
+              //             ),
+              //             trailing: Text(
+              //               '${fee.feeAmount} TL',
+              //               style: const TextStyle(
+              //                   fontSize: 16, fontWeight: FontWeight.bold),
+              //             ),
+              //             onTap: () {
+              //               _showCustomDialog(context);
+              //             },
+              //           );
+              //         },
+              //       );
+              //     }
+              //   },
+              // ),
+            //),
           ],
         ),
       ),
     );
   }
-  Stream<List<Fee>> fetchFeesForApartment(int apartmentId) async* {
-    await for (final fees in apiService.fetchFees(apartmentId)) {
-      yield fees;
-    }
-  }
+
 
   Future<void> _showCustomDialog(BuildContext context) async {
     return showDialog<void>(
@@ -257,9 +254,5 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 
