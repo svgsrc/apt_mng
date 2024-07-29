@@ -18,11 +18,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     APIService apiService = APIService();
 
-    // apiService.fetchApartments().listen((apartments) {
-    //   print('Apartments loaded: $apartments');
-    // }).onError((error) {
-    //   print('Error loading apartments: $error');
-    // });
 
 
     return const MaterialApp(

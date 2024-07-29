@@ -12,7 +12,7 @@ class APIService {
   BehaviorSubject<List<Apartment>?> apartments$= BehaviorSubject.seeded(null);
   BehaviorSubject<List<Fee>?> fees$= BehaviorSubject.seeded(null);
 
-  Future <List<Apartment>> fetchApartments()async{
+  Future <List<Apartment>> fetchApartments(String blockName,int hotelId)async{
     final Map<String, dynamic> requestBody = {
       "Action": "Execute",
       "Object": "SP_MOBILE_APARTMENT_FLATS_LIST",
@@ -51,7 +51,7 @@ class APIService {
     return [];
   }
 
-  Future <List<Fee>?> fetchFees(int apartmentId)async{
+  Future <List<Fee>> fetchFees(int apartmentId,int hotelId)async{
     final Map<String, dynamic> requestBody ={
       "Action": "Execute",
       "Object": "SP_MOBILE_APARTMENT_FEES_LIST",
@@ -64,7 +64,7 @@ class APIService {
     try {
       var response = await http.post(
         Uri.parse(url),
-        body: jsonEncode(requestBody),
+        body: json.encode(requestBody),
       );
 
       if (response.statusCode == 200) {
@@ -80,11 +80,15 @@ class APIService {
           }else {
             fees$.add([]);
           }
-
       }
     } catch (e) {
       print("Failed to upload fees: $e");
     }
     return [];
   }
+
 }
+
+
+
+

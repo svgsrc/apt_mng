@@ -1,24 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talya_flutter/Global/constants.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:talya_flutter/Widgets/apartment-card.dart';
 
-import '../Models/Apartment.dart';
 
 class HomePage extends StatefulWidget {
+ final String blockName;
+ final int hotelId;
+
+ HomePage({Key? key, required this.blockName,required this.hotelId}) : super(key: key);
+
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late APIService apiService ;
+  final APIService apiService = GetIt.I<APIService>();
+  List<Apartment> apartments = [];
+
 
   @override
   void initState() {
     super.initState();
-    apiService = GetIt.I<APIService>();
-    apiService.fetchApartments();
+    apiService.fetchApartments(widget.blockName,widget.hotelId);
 
   }
 
@@ -27,19 +35,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text('Apartmanlar'),
+        title: const Text('Apartman Daireleri'),
         centerTitle: true,
         titleTextStyle: const TextStyle(color: appText, fontSize: 20),
         leading: Container(),
       ),
-        body: StreamBuilder<List<Apartment>?>(
-          stream: apiService.apartments$,
+        body: StreamBuilder(
+          stream: apiService.apartments$.stream,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            if (apiService.apartments$.value == null) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            } else if (apiService.apartments$.value!.isEmpty) {
               return const Center(
                 child: Text(
                   'Apartman bulunmamaktadır.',

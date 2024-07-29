@@ -7,6 +7,7 @@ import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 
 
+
 class ApartmentCard extends StatelessWidget {
   final Apartment apartment;
   final APIService apiService= GetIt.I<APIService>();
@@ -87,7 +88,7 @@ class ApartmentCard extends StatelessWidget {
                       final apartmentId=apartment.id;
 
                       try{
-                        final fees = await apiService.fetchFees(apartmentId);
+                        final fees = await apiService.fetchFees(apartmentId, apartment.hotelId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

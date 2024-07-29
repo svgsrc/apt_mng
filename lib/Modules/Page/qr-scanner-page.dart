@@ -6,7 +6,9 @@ import 'package:talya_flutter/Modules/Page/home-page.dart';
 
 
 class QRScannerPage extends StatefulWidget {
+
   const QRScannerPage({super.key});
+
 
   @override
   State<QRScannerPage> createState() => _QRScannerPageState();
@@ -17,6 +19,9 @@ class _QRScannerPageState extends State<QRScannerPage> {
   late QRScannerController qrScannerController;
   final TextEditingController _codeController = TextEditingController();
   String responseMessage= '';
+  String? blockName;
+  int? hotelId;
+
 
   @override
   void initState() {
@@ -37,6 +42,18 @@ class _QRScannerPageState extends State<QRScannerPage> {
         responseMessage = newMessage;
       });
     }
+  }
+  void onQRViewCreated(QRViewController controller) {
+    qrScannerController.onQRViewCreated(controller, context);
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        List<String> splitData = scanData.code?.split(',') ?? [];
+        if (splitData.length == 2) {
+          blockName = splitData[0];
+          hotelId = int.tryParse(splitData[1]);
+        }
+      });
+    });
   }
 
   @override
@@ -167,9 +184,11 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(),
+                            builder: (context) => HomePage(blockName: '',hotelId: 0 ,
+                            ),
                           ),
                         );
+
 
                       },
                       icon: const Icon(

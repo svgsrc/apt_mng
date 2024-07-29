@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_RESPOND_VIA_MESSAGE" tools:ignore="ProtectedPermissions" />
     <application
-        android:label="talya_flutter"
+        android:label="Elektra Apartment"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
