@@ -1,3 +1,5 @@
+import 'package:talya_flutter/Modules/Models/Fee.dart';
+
 class Apartment {
   final int id;
   final int hotelId;
@@ -16,6 +18,7 @@ class Apartment {
   final String endDate;
   final bool isDisabled;
 
+
   Apartment({
     required this.id,
     required this.hotelId,
@@ -33,6 +36,7 @@ class Apartment {
     required this.startDate,
     required this.endDate,
     required this.isDisabled,
+
   });
 
   factory Apartment.fromJson(Map<String, dynamic> json) {
