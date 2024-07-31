@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
@@ -33,7 +34,7 @@ class ApartmentCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Card(
-            color: Colors.grey[300],
+            color: Colors.grey[200],
             margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -49,26 +50,17 @@ class ApartmentCard extends StatelessWidget {
                       children: [
                         Text(
                           contactName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: boldTextStyle,
                         ),
                         if (contactName != ownerName)
                           Text(
                             ownerName,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
+                            style: normalTextStyle
                           ),
                         if (plateNo != 'N/A')
                           Text(
                             plateNo,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style:boldTextStyle
                           ),
                       ],
                     ),
@@ -78,9 +70,7 @@ class ApartmentCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           numberOfPeople.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,color:Colors.black,fontWeight: FontWeight.bold,
-                          ),
+                          style: boldTextStyle.copyWith(color: Colors.black),
                         ),
                       ],
                     ),
@@ -141,15 +131,12 @@ class ApartmentCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Colors.grey[200],
               shape: BoxShape.circle,
             ),
             child: Text(
               flatNumber.toString(),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: boldTextStyle,
             ),
           ),
         ),

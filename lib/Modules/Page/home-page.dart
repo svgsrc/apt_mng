@@ -35,9 +35,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text('Apartman Daireleri'),
+        title: const Text('Apartmanlar', style: TextStyle(color: appText)),
         centerTitle: true,
-        titleTextStyle: const TextStyle(color: appText, fontSize: 20),
+        titleTextStyle: boldTextStyle.copyWith(color: appText,fontSize: 20),
         leading: Container(),
       ),
         body: StreamBuilder(
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               return const Center(
                 child: Text(
                   'Apartman bulunmamaktadır.',
-                  style: TextStyle(fontSize: 18),
+                  style: normalTextStyle,
                 ),
               );
             }

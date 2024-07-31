@@ -38,4 +38,10 @@ flutter:
 
   assets:
     - assets/logo.png
-    - assets/dashboard.mp4
+
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
