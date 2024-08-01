@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text('Apartmanlar', style: TextStyle(color: appText)),
+        title:  Text("Apartmanlar", style: TextStyle(color: appText)),
         centerTitle: true,
         titleTextStyle: boldTextStyle.copyWith(color: appText,fontSize: 20),
         leading: Container(),

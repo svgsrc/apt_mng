@@ -37,7 +37,7 @@ class APIService {
       "Object": "SP_MOBILE_APARTMENT_FLATS_LIST",
       "Parameters": {
         "BLOCKNAME": "A BLOK",
-        "HOTELID": 20854
+        "HOTELID": 20854 ,
       }
     };
 
@@ -45,13 +45,15 @@ class APIService {
       var response = await http.post(
         Uri.parse(url+'/Execute/SP_MOBILE_APARTMENT_FLATS_LIST'),
         headers: {'User-Agent': 'appartmentApp_1.0.0'},
-        body: jsonEncode(requestBody),
+        body: json.encode(requestBody),
       );
 
       if (response.statusCode == 200) {
         final decodedResponse = utf8.decode(response.bodyBytes);
 
           var data = json.decode(decodedResponse);
+
+
           if(data[0].isNotEmpty){
             List<Apartment> apartments = [];
             data[0].forEach((apartment) {

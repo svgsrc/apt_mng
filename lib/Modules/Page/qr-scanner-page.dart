@@ -6,9 +6,7 @@ import 'package:talya_flutter/Modules/Page/home-page.dart';
 
 
 class QRScannerPage extends StatefulWidget {
-
   const QRScannerPage({super.key});
-
 
   @override
   State<QRScannerPage> createState() => _QRScannerPageState();
@@ -17,11 +15,7 @@ class QRScannerPage extends StatefulWidget {
 class _QRScannerPageState extends State<QRScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRScannerController qrScannerController;
-  final TextEditingController _codeController = TextEditingController();
-  String responseMessage= '';
-  String? blockName;
-  int? hotelId;
-
+  final TextEditingController codeController = TextEditingController();
 
   @override
   void initState() {
@@ -32,28 +26,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
   @override
   void dispose() {
     qrScannerController.dispose();
-    _codeController.dispose();
+    codeController.dispose();
     super.dispose();
-  }
-
-  void updateResponseMessage(String? newMessage){
-    if(newMessage != null){
-      setState(() {
-        responseMessage = newMessage;
-      });
-    }
-  }
-  void onQRViewCreated(QRViewController controller) {
-    qrScannerController.onQRViewCreated(controller, context);
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        List<String> splitData = scanData.code?.split(',') ?? [];
-        if (splitData.length == 2) {
-          blockName = splitData[0];
-          hotelId = int.tryParse(splitData[1]);
-        }
-      });
-    });
   }
 
   @override
@@ -70,7 +44,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
               flex: 4,
               child: QRView(
                 key: qrKey,
-                onQRViewCreated:(controller) => qrScannerController.onQRViewCreated(controller, context),
+                onQRViewCreated: (controller) => qrScannerController.onQRViewCreated(controller, context),
                 overlay: QrScannerOverlayShape(
                   borderColor: primary,
                   borderRadius: 10,
@@ -136,7 +110,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         },
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -148,24 +122,12 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       margin: const EdgeInsets.only(right: 5),
                       alignment: Alignment.center,
                       child: TextFormField(
-                        controller: _codeController,
+                        controller: codeController,
                         decoration: InputDecoration(
                           hintText: 'Enter the code here',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: primary,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: primary,
-                            ),
-                          ),
+                          border: border,
+                          enabledBorder: enableBorder,
+                          focusedBorder: focusBorder
                         ),
                         cursorColor: primary,
                       ),
@@ -178,26 +140,25 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     ),
                     child: IconButton(
                       onPressed: () async {
-                        if (_codeController.text.isNotEmpty) {
-                          await qrScannerController.saveCode(_codeController.text);
-
+                        if (codeController.text.isNotEmpty) {
+                          await qrScannerController.saveCode(codeController.text);
                         }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(blockName: '',hotelId: 0 ,
+                            builder: (context) => HomePage(
+                              blockName: '',
+                              hotelId: 0,
                             ),
                           ),
                         );
-
-
                       },
-                      icon: const Icon(
+                      icon:const Icon(
                         Icons.check,
                         color: primary,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -207,6 +168,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
     );
   }
 }
+
 
 
 

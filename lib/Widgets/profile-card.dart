@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
-
 class ProfileCard extends StatelessWidget {
   final Apartment apartment;
 
@@ -21,8 +20,8 @@ class ProfileCard extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(10),
+          color: cardColor,
+          borderRadius: radius,
         ),
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -41,7 +40,7 @@ class ProfileCard extends StatelessWidget {
                       Text(apartment.flatNumber, style: boldTextStyle),
                     ],
                   ),
-                  if (apartment.idNo != 'N/A')
+                  if (apartment.idNo != 'N/A' && apartment.idNo != '')
                     Text(apartment.idNo, style: boldTextStyle),
                   Row(
                     children: [
@@ -53,44 +52,42 @@ class ProfileCard extends StatelessWidget {
                     ],
                   ),
                   Text(apartment.phone, style: boldTextStyle),
-                  if (apartment.contactName != apartment.ownerName)
+                  if (apartment.contactName != apartment.ownerName && apartment.ownerName != 'N/A' && apartment.ownerName != '')
                     Text(apartment.ownerName, style: normalTextStyle),
-                  Text(apartment.ownerPhone, style: normalTextStyle),
-                  if (apartment.plateNo != 'N/A')
+                  if (apartment.ownerPhone != 'N/A' && apartment.ownerPhone != '')
+                    Text(apartment.ownerPhone, style: normalTextStyle),
+                  if (apartment.plateNo != 'N/A' && apartment.plateNo != '')
                     Text(apartment.plateNo, style: boldTextStyle),
                 ],
               ),
             ]),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
                 RichText(
                   textAlign: TextAlign.center,
-                  text:  TextSpan(
+                  text: TextSpan(
                     style: boldTextStyle.copyWith(color: Colors.black),
-                    children:<TextSpan> [
+                    children: <TextSpan> [
                       const TextSpan(text: 'Başlangıç Tarihi'),
                       const TextSpan(text: '\n'),
                       TextSpan(text: formatDate(apartment.startDate)),
-
                     ],
                   ),
                 ),
                 RichText(
                   textAlign: TextAlign.center,
-                  text:  TextSpan(
+                  text: TextSpan(
                     style: boldTextStyle.copyWith(color: Colors.black),
-                    children:<TextSpan> [
+                    children: <TextSpan> [
                       const TextSpan(text: 'Bitiş Tarihi'),
                       const TextSpan(text: '\n'),
                       TextSpan(text: formatDate(apartment.endDate)),
-
                     ],
                   ),
                 ),
-
               ],
             ),
             Row(
@@ -104,5 +101,4 @@ class ProfileCard extends StatelessWidget {
       ),
     );
   }
-
 }

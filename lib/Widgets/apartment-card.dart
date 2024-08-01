@@ -34,10 +34,10 @@ class ApartmentCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Card(
-            color: Colors.grey[200],
+            color: cardColor,
             margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: radius,
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -131,7 +131,7 @@ class ApartmentCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: cardColor,
               shape: BoxShape.circle,
             ),
             child: Text(

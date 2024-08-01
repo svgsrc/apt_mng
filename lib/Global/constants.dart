@@ -6,7 +6,12 @@ const background = Colors.white;
 const appText = Colors.white;
 final cardColor= Colors.grey[200];
 
+double getScreenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+double getScreenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
 const url = 'https://4001.hoteladvisor.net';
+
+final BorderRadius  radius= BorderRadius.circular(10);
 
 const TextStyle boldTextStyle = TextStyle(
   fontFamily: 'OpenSans',

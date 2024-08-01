@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
@@ -47,22 +48,22 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primary,
-        title: Text(widget.apartment.contactName),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-            fontFamily: 'OpenSans', color: appText, fontSize: 20),
-        leading: Container(
-          margin: const EdgeInsets.all(10),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: appText),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+      appBar:AppBar(
+            backgroundColor: primary,
+            title: Text(widget.apartment.contactName),
+            centerTitle: true,
+            titleTextStyle: const TextStyle(
+                fontFamily: 'OpenSans', color: appText, fontSize: 20),
+            leading: Container(
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: appText),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ),
-        ),
-      ),
       body: StreamBuilder(
         stream: apiService.combinedStream$,
         builder: (context, snapshot) {
@@ -70,9 +71,7 @@ class _DetailPageState extends State<DetailPage> {
             return const Center(
               child: CircularProgressIndicator(color: primary),
             );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData ||
+          }  else if (!snapshot.hasData ||
               snapshot.data!.item1 == null ||
               snapshot.data!.item1!.isEmpty) {
             return const Center(child: Text('No apartments found.'));
