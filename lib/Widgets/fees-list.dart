@@ -17,6 +17,8 @@ class FeesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemCount: fees.length,
       itemBuilder: (context, index) {
         final fee = fees[index];

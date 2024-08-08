@@ -86,7 +86,6 @@ class _DetailPageState extends State<DetailPage> {
                     child: ProfileCard(apartment: widget.apartment),
                   ),
                 ),
-                // FeesList as a SliverToBoxAdapter (wrapped in a CustomScrollView)
                 SliverToBoxAdapter(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
