@@ -66,6 +66,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           bool isPaused = snapshot.data ?? false;
                           return Container(
                             decoration: BoxDecoration(
+                              color:primary,
                               border: Border.all(color: primary, width: 1),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -75,7 +76,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               },
                               icon: Icon(
                                 isPaused ? Icons.play_arrow : Icons.pause,
-                                color: primary,
+                                color: Colors.white,
                                 size: 30,
                               ),
                             ),
@@ -94,6 +95,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           return Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: primary, width: 1),
+                              color: primary,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: IconButton(
@@ -102,7 +104,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               },
                               icon: Icon(
                                 isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
-                                color: primary,
+                                color: Colors.white,
                                 size: 30,
                               ),
                             ),
@@ -136,6 +138,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: primary, width: 1),
+                      color: primary,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
@@ -155,7 +158,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       },
                       icon:const Icon(
                         Icons.check,
-                        color: primary,
+                        color: Colors.white,
                       ),
                     ),
                   ),

@@ -7,7 +7,7 @@ import 'package:talya_flutter/Widgets/payment-dialog.dart';
 class FeesList extends StatelessWidget {
   final List<Fee> fees;
 
-  FeesList({super.key, required this.fees});
+  const FeesList({super.key, required this.fees});
 
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
@@ -22,52 +22,79 @@ class FeesList extends StatelessWidget {
         final fee = fees[index];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: cardColor,
+          child: Card(
+            color: cardColor,
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            shape: RoundedRectangleBorder(
               borderRadius: radius,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
             ),
-            child: ListTile(
-              title: Text(
-                fee.feeTypeId == 1
-                    ? 'Aylık Ücret'
-                    : fee.feeTypeId == 2
-                        ? 'Genel Giderler'
-                        : fee.feeTypeId == 3
-                            ? 'Demirbaş'
-                            : 'Diğer',
-                style: boldTextStyle,
-              ),
-              subtitle: Text(formatDate(fee.feeDate), style: normalTextStyle,
-              ),
-              trailing: Row(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Text('${fee.feeAmount} TL', style: boldTextStyle),
-                        Text('Ödenen:${fee.paymentAmount} TL', style: normalTextStyle),
-                      ]),
+                children: [
+                  ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          fee.feeTypeId == 1
+                              ? 'Aylık Ücret'
+                              : fee.feeTypeId == 2
+                              ? 'Genel Giderler'
+                              : fee.feeTypeId == 3
+                              ? 'Demirbaş'
+                              : 'Diğer',
+                          style: boldTextStyle,
+                        ),
+                        Divider(color: Colors.grey[400]),
+                      ],
+                    ),
+                    subtitle: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          alignment: WrapAlignment.spaceBetween,
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: [
+                            Text(
+                              'Ücret Tarihi: ${formatDate(fee.feeDate)}',
+                              style: normalTextStyle.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              ' ${fee.feeAmount} TL',
+                              style: normalTextStyle.copyWith(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        if (fee.paymentDate != null && fee.paymentDate != '')
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: [
+                              Text(
+                                'Ödeme Tarihi: ${formatDate(fee.paymentDate!)}',
+                                style: normalTextStyle.copyWith(fontSize: 14),
+                              ),
+                              Text(
+                                ' ${fee.paymentAmount} TL',
+                                style: normalTextStyle.copyWith(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => PaymentDialog(),
+                      );
+                    },
+                  ),
                 ],
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: radius,
-              ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => PaymentDialog(),
-                );
-              },
             ),
           ),
         );

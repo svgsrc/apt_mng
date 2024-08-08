@@ -6,12 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:talya_flutter/Modules/Page/detail-page.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
-
-
-
 class ApartmentCard extends StatelessWidget {
   final Apartment apartment;
-  final APIService apiService= GetIt.I<APIService>();
+  final APIService apiService = GetIt.I<APIService>();
 
   ApartmentCard({super.key, required this.apartment});
 
@@ -32,7 +29,7 @@ class ApartmentCard extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 20.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Card(
             color: cardColor,
             margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -48,37 +45,30 @@ class ApartmentCard extends StatelessWidget {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          contactName,
-                          style: boldTextStyle,
-                        ),
+                        Row(children: [
+                          Text(
+                            contactName,
+                            style: boldTextStyle,
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.person, color: Colors.black),
+                          Text(
+                            numberOfPeople.toString(),
+                            style: boldTextStyle.copyWith(color: Colors.black),
+                          ),
+                        ]),
                         if (contactName != ownerName)
-                          Text(
-                            ownerName,
-                            style: normalTextStyle
-                          ),
+                          Text(ownerName, style: normalTextStyle),
                         if (plateNo != 'N/A')
-                          Text(
-                            plateNo,
-                            style:boldTextStyle
-                          ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      children: [
-                        const Icon(Icons.person,color:Colors.black),
-                        const SizedBox(width: 4),
-                        Text(
-                          numberOfPeople.toString(),
-                          style: boldTextStyle.copyWith(color: Colors.black),
-                        ),
+                          Text(plateNo, style: boldTextStyle),
                       ],
                     ),
                     onTap: () async {
-                      final apartmentId=apartment.id;
+                      final apartmentId = apartment.id;
 
-                      try{
-                        final fees = await apiService.fetchFees(apartmentId, apartment.hotelId);
+                      try {
+                        final fees = await apiService.fetchFees(
+                            apartmentId, apartment.hotelId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -88,7 +78,7 @@ class ApartmentCard extends StatelessWidget {
                             ),
                           ),
                         );
-                      }catch(e){
+                      } catch (e) {
                         print('Failed to load fees: $e');
                       }
                     },
@@ -121,13 +111,15 @@ class ApartmentCard extends StatelessWidget {
                     ),
                   ),
                 ],
+
               ),
             ),
           ),
+
         ),
         Positioned(
           left: 9.0,
-          top: 8.0,
+          top: 5.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -152,6 +144,7 @@ class ApartmentCard extends StatelessWidget {
       throw 'Could not launch $url';
     }
   }
+
   // Future<void> _sendEmail(String email) async {
   //   final url = 'mailto:$email';
   //   if (await canLaunch(url)) {

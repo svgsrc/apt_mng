@@ -28,12 +28,11 @@ class QRScannerController {
         String blockName = splitData[1];
         print('Hotel ID: $hotelId, Block Name: $blockName');
 
-
         if (hotelId != null) {
           blockName$.add(blockName);
           hotelId$.add(hotelId);
           await saveCode(qrText);
-          await fetchApartmentsAndNavigate(blockName, hotelId , context);
+          await fetchApartmentsAndNavigate(blockName, hotelId, context);
         }
       } else {
         print('QR code format is incorrect: $qrText');
@@ -41,15 +40,10 @@ class QRScannerController {
     });
   }
 
-  Future<void> fetchApartmentsAndNavigate(String blockName, int hotelId, BuildContext context) async {
+  Future<void> fetchApartmentsAndNavigate(
+      String blockName, int hotelId, BuildContext context) async {
     try {
-      List<Apartment> apartments = await apiService.fetchApartments(blockName, hotelId);
-
-      if (apartments.isNotEmpty) {
-        navigateToPage(blockName, hotelId, context);
-      } else {
-        print("No apartments found");
-      }
+      navigateToPage(blockName, hotelId, context);
     } catch (e) {
       print("Error fetching apartments: $e");
     }
@@ -96,4 +90,3 @@ class QRScannerController {
     hotelId$.close();
   }
 }
-

@@ -36,8 +36,8 @@ class APIService {
       "Action": "Execute",
       "Object": "SP_MOBILE_APARTMENT_FLATS_LIST",
       "Parameters": {
-        "BLOCKNAME": "A BLOK",
-        "HOTELID": 20854 ,
+        "BLOCKNAME": blockName,
+        "HOTELID": hotelId,
       }
     };
 

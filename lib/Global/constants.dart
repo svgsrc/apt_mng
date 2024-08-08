@@ -41,3 +41,6 @@ final OutlineInputBorder focusBorder = OutlineInputBorder(
 final OutlineInputBorder border= OutlineInputBorder(
 borderRadius: BorderRadius.circular(10),
 );
+
+
+final myDivider= Divider(color: Colors.grey[400]);

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
@@ -14,7 +13,7 @@ class DetailPage extends StatefulWidget {
   final Apartment apartment;
   final List<Fee> fees;
 
-  DetailPage({required this.apartment, required this.fees});
+   DetailPage({required this.apartment, required this.fees});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -76,26 +75,29 @@ class _DetailPageState extends State<DetailPage> {
               snapshot.data!.item1!.isEmpty) {
             return const Center(child: Text('No apartments found.'));
           } else {
-            List<Apartment> apartments = snapshot.data!.item1!;
             Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
             List<Fee> fees = feesMap[widget.apartment.id] ?? [];
-            return Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProfileCard(apartment: widget.apartment),
-
-                  Expanded(
-                    child:FeesList(fees: fees),
+             return CustomScrollView(
+              slivers: [
+                // ProfileCard as a SliverToBoxAdapter
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                    child: ProfileCard(apartment: widget.apartment),
                   ),
-                ],
-              ),
+                ),
+                // FeesList as a SliverToBoxAdapter (wrapped in a CustomScrollView)
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: FeesList(fees: fees),
+                  ),
+                ),
+              ],
             );
           }
         },
       ),
     );
   }
-
 }
