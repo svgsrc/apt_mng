@@ -4,7 +4,6 @@ import 'package:talya_flutter/Modules/Service/qr-scanner-service.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
 
-
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
 
@@ -44,7 +43,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
               flex: 4,
               child: QRView(
                 key: qrKey,
-                onQRViewCreated: (controller) => qrScannerController.onQRViewCreated(controller, context),
+                onQRViewCreated: (controller) =>
+                    qrScannerController.onQRViewCreated(controller, context),
                 overlay: QrScannerOverlayShape(
                   borderColor: primary,
                   borderRadius: 10,
@@ -66,7 +66,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           bool isPaused = snapshot.data ?? false;
                           return Container(
                             decoration: BoxDecoration(
-                              color:primary,
+                              color: primary,
                               border: Border.all(color: primary, width: 1),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -103,7 +103,9 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 qrScannerController.toggleFlash();
                               },
                               icon: Icon(
-                                isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
+                                isFlashOn
+                                    ? Icons.flashlight_off
+                                    : Icons.flashlight_on,
                                 color: Colors.white,
                                 size: 30,
                               ),
@@ -126,11 +128,10 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       child: TextFormField(
                         controller: codeController,
                         decoration: InputDecoration(
-                          hintText: 'Enter the code here',
-                          border: border,
-                          enabledBorder: enableBorder,
-                          focusedBorder: focusBorder
-                        ),
+                            hintText: 'Enter the code here',
+                            border: border,
+                            enabledBorder: enableBorder,
+                            focusedBorder: focusBorder),
                         cursorColor: primary,
                       ),
                     ),
@@ -144,7 +145,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     child: IconButton(
                       onPressed: () async {
                         if (codeController.text.isNotEmpty) {
-                          await qrScannerController.saveCode(codeController.text);
+                          await qrScannerController
+                              .saveCode(codeController.text);
                         }
                         Navigator.push(
                           context,
@@ -156,7 +158,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           ),
                         );
                       },
-                      icon:const Icon(
+                      icon: const Icon(
                         Icons.check,
                         color: Colors.white,
                       ),
@@ -171,10 +173,3 @@ class _QRScannerPageState extends State<QRScannerPage> {
     );
   }
 }
-
-
-
-
-
-
-

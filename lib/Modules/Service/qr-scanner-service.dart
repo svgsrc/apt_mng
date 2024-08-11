@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
 import 'package:talya_flutter/Service/api-service.dart';
-import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 class QRScannerController {
   final pause$ = BehaviorSubject<bool>.seeded(false);
@@ -16,8 +15,23 @@ class QRScannerController {
   QRViewController? qrController;
   final APIService apiService = GetIt.I<APIService>();
 
-  void onQRViewCreated(QRViewController controller, BuildContext context) {
+  void onQRViewCreated(QRViewController controller, BuildContext context) async {
     qrController = controller;
+
+    // bool hasScannedBefore = await checkIfScannedBefore();
+    // if (hasScannedBefore) {
+    //   final prefs = await SharedPreferences.getInstance();
+    //   List<String> savedCodes = prefs.getStringList('saved_codes') ?? [];
+    //   if (savedCodes.isNotEmpty) {
+    //     String lastCode = savedCodes.last;
+    //     List<String> splitData = lastCode.split(",");
+    //     int? hotelId = int.tryParse(splitData[0]);
+    //     String blockName = splitData[1];
+    //     navigateToPage(blockName, hotelId!, context);
+    //     return;
+    //   }
+    // }
+
     controller.scannedDataStream.listen((scanData) async {
       String qrText = scanData.code ?? '';
       print("QR Text:$qrText");
@@ -40,6 +54,12 @@ class QRScannerController {
     });
   }
 
+  Future<bool> checkIfScannedBefore() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? savedCodes = prefs.getStringList('saved_codes');
+    return savedCodes != null && savedCodes.isNotEmpty;
+  }
+
   Future<void> fetchApartmentsAndNavigate(
       String blockName, int hotelId, BuildContext context) async {
     try {
@@ -50,7 +70,7 @@ class QRScannerController {
   }
 
   void navigateToPage(String blockName, int hotelId, BuildContext context) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => HomePage(blockName: blockName, hotelId: hotelId),
@@ -90,3 +110,4 @@ class QRScannerController {
     hotelId$.close();
   }
 }
+

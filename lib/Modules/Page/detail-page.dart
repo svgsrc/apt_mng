@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
@@ -13,7 +12,7 @@ class DetailPage extends StatefulWidget {
   final Apartment apartment;
   final List<Fee> fees;
 
-   DetailPage({required this.apartment, required this.fees});
+  DetailPage({required this.apartment, required this.fees});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -46,57 +45,77 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:AppBar(
-            backgroundColor: primary,
-            title: Text(widget.apartment.contactName),
-            centerTitle: true,
-            titleTextStyle: const TextStyle(
-                fontFamily: 'OpenSans', color: appText, fontSize: 20),
-            leading: Container(
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: appText),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+    final mediaQuery = MediaQuery.of(context);
+    final topPadding = mediaQuery.padding.top;
+
+    return Container(
+      padding: EdgeInsets.only(top: topPadding),
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 25,
+          backgroundColor: background,
+          flexibleSpace: Container(
+            color: primary,
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                  color: appText,
+                ),
+                Expanded(
+                  child: Text(
+                    widget.apartment.contactName,
+                    textAlign: TextAlign.center,
+                    style: normalTextStyle.copyWith(color: appText, fontSize: 20),
+                  ),
+                ),
+                const SizedBox(width: 48),
+              ],
             ),
           ),
-      body: StreamBuilder(
-        stream: apiService.combinedStream$,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: primary),
-            );
-          }  else if (!snapshot.hasData ||
-              snapshot.data!.item1 == null ||
-              snapshot.data!.item1!.isEmpty) {
-            return const Center(child: Text('No apartments found.'));
-          } else {
-            Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
-            List<Fee> fees = feesMap[widget.apartment.id] ?? [];
-             return CustomScrollView(
-              slivers: [
-                // ProfileCard as a SliverToBoxAdapter
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                    child: ProfileCard(apartment: widget.apartment),
-                  ),
+
+          automaticallyImplyLeading: false,
+        ),
+        body: StreamBuilder(
+          stream: apiService.combinedStream$,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(color: primary),
+              );
+            } else if (!snapshot.hasData ||
+                snapshot.data!.item1 == null ||
+                snapshot.data!.item1!.isEmpty) {
+              return const Center(child: Text('No apartments found.'));
+            } else {
+              Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
+              List<Fee> fees = feesMap[widget.apartment.id] ?? [];
+
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
+                      child: ProfileCard(apartment: widget.apartment),
+                    ),
+                    FeesList(fees: fees),
+                  ],
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: FeesList(fees: fees),
-                  ),
-                ),
-              ],
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }
 }
+//title: Text(
+//               textAlign: TextAlign.center,
+//                 widget.apartment.contactName,
+//               style: normalTextStyle.copyWith(color: appText, fontSize: 20)
+//             ),

@@ -25,40 +25,60 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final mediaQuery = MediaQuery.of(context);
+    final topPadding = mediaQuery.padding.top;
+
+    return Container(
+      padding: EdgeInsets.only(top: topPadding),
+      child: Scaffold(
       appBar: AppBar(
-        title: StreamBuilder(
+        toolbarHeight: 25,
+        backgroundColor: primary,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          height: 50,
+          color: primary,
+         child:Center(
+           child: StreamBuilder(
+             stream: apiService.apartments$.stream,
+             builder: (context, snapshot) {
+               if (!snapshot.hasData) {
+                 return  Center(child: Text(
+                   'Loading...', style: boldTextStyle.copyWith(color:appText),
+                 ),
+                 );
+               }
+               final apartments = snapshot.data!;
+               final titleText = "${apartments.isNotEmpty ? apartments[0].name : ''} - ${widget.blockName} ";
+               return Text(
+                 textAlign: TextAlign.center,
+                 titleText,
+                 style: normalTextStyle.copyWith(color: appText, fontSize: 20),
+               );
+             },
+           ),
+         ),
+        ),
+
+      ),
+
+      body: StreamBuilder(
           stream: apiService.apartments$.stream,
           builder: (context, snapshot) {
-            final apartments = snapshot.data!;
-            final titleText = "${apartments.isNotEmpty ? apartments[0].name : ''} - ${widget.blockName} ";
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator(color:Colors.blue));
+            }
 
-            return Text(
-              titleText,
-              style: boldTextStyle.copyWith(color: appText, fontSize: 20),
+            final apartments = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: apartments.length,
+              itemBuilder: (context, index) {
+                return ApartmentCard(apartment: apartments[index]);
+              },
             );
           },
         ),
-        centerTitle: true,
-        backgroundColor: primary,
-        automaticallyImplyLeading: false,
-      ),
-      body: StreamBuilder(
-        stream: apiService.apartments$.stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          final apartments = snapshot.data!;
-
-          return ListView.builder(
-            itemCount: apartments.length,
-            itemBuilder: (context, index) {
-              return ApartmentCard(apartment: apartments[index]);
-            },
-          );
-        },
       ),
     );
   }

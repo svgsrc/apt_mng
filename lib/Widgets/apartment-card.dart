@@ -51,7 +51,7 @@ class ApartmentCard extends StatelessWidget {
                             style: boldTextStyle,
                           ),
                           const SizedBox(width: 8),
-                          const Icon(Icons.person, color: Colors.black),
+                          const Icon(Icons.people, color: Colors.black),
                           Text(
                             numberOfPeople.toString(),
                             style: boldTextStyle.copyWith(color: Colors.black),
@@ -111,11 +111,9 @@ class ApartmentCard extends StatelessWidget {
                     ),
                   ),
                 ],
-
               ),
             ),
           ),
-
         ),
         Positioned(
           left: 9.0,

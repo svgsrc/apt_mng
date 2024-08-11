@@ -15,7 +15,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Stack(children: [
+    return Stack(children: [
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: Card(
@@ -66,7 +66,7 @@ class ProfileCard extends StatelessWidget {
                       style: boldTextStyle,
                     ),
                     const SizedBox(width: 80),
-                    const Icon(Icons.phone),
+                    const Icon(Icons.phone, color: Colors.green),
                     Text(
                       apartment.phone,
                       style: boldTextStyle,
@@ -102,7 +102,7 @@ class ProfileCard extends StatelessWidget {
                         style: boldTextStyle,
                       ),
                       const SizedBox(width: 80),
-                      const Icon(Icons.phone),
+                      const Icon(Icons.phone, color: Colors.green),
                       Text(
                         apartment.ownerPhone,
                         style: boldTextStyle,
@@ -127,7 +127,7 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 0),
+                    const SizedBox(width: 5),
                     const SizedBox(
                       height: 40,
                       child: VerticalDivider(
@@ -179,11 +179,9 @@ class ProfileCard extends StatelessWidget {
                 ),
                 Divider(color: Colors.grey[400]),
                 Text("BALANCE : ${apartment.balance} TL", style: boldTextStyle),
-
               ],
             ),
           ),
-
         ),
       ),
       Positioned(
@@ -200,8 +198,6 @@ class ProfileCard extends StatelessWidget {
               style: boldTextStyle,
             ),
           ))
-    ]
-    );
-
+    ]);
   }
 }

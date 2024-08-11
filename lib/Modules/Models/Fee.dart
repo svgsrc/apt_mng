@@ -1,4 +1,4 @@
-class Fee{
+class Fee {
   final int id;
   final int hotelId;
   final int flatId;

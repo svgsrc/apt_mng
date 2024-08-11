@@ -43,10 +43,10 @@ class FeesList extends StatelessWidget {
                           fee.feeTypeId == 1
                               ? 'Aylık Ücret'
                               : fee.feeTypeId == 2
-                              ? 'Genel Giderler'
-                              : fee.feeTypeId == 3
-                              ? 'Demirbaş'
-                              : 'Diğer',
+                                  ? 'Genel Giderler'
+                                  : fee.feeTypeId == 3
+                                      ? 'Demirbaş'
+                                      : 'Diğer',
                           style: boldTextStyle,
                         ),
                         Divider(color: Colors.grey[400]),
@@ -91,7 +91,7 @@ class FeesList extends StatelessWidget {
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) => PaymentDialog(),
+                        builder: (context) => PaymentDialog(fees: [],),
                       );
                     },
                   ),
