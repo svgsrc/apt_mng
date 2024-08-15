@@ -19,6 +19,8 @@ class ApartmentCard extends StatelessWidget {
     String ownerName = apartment.ownerName ?? 'Unknown';
     String plateNo = apartment.plateNo ?? 'N/A';
     int numberOfPeople = apartment.numberOfPeople ?? 0;
+    String email=apartment.email??'';
+    String photoUrl=apartment.photoUrl??'';
 
     try {
       flatNumber = int.parse(apartment.flatNumber ?? '0');
@@ -36,87 +38,153 @@ class ApartmentCard extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: radius,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(children: [
-                          Text(
-                            contactName,
-                            style: boldTextStyle,
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.people, color: Colors.black),
-                          Text(
-                            numberOfPeople.toString(),
-                            style: boldTextStyle.copyWith(color: Colors.black),
-                          ),
-                        ]),
-                        if (contactName != ownerName)
-                          Text(ownerName, style: normalTextStyle),
-                        if (plateNo != 'N/A')
-                          Text(plateNo, style: boldTextStyle),
-                      ],
+            child: InkWell(
+              borderRadius: radius,
+              onTap: () async {
+                final apartmentId = apartment.id;
+                try {
+                  final fees = await apiService.fetchFees(
+                      apartmentId, apartment.hotelId);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(
+                        apartment: apartment,
+                        fees: fees,
+                      ),
                     ),
-                    onTap: () async {
-                      final apartmentId = apartment.id;
+                  );
+                } catch (e) {
+                  print('Failed to load fees: $e');
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              photoUrl != null && photoUrl.isNotEmpty
+                                  ? CircleAvatar(
+                                backgroundImage: NetworkImage(photoUrl),
+                                radius: 40,
+                              )
+                                  :  Icon(Icons.account_circle,
+                                  size: 80, color: Colors.grey[400]),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          contactName,
+                                          style: boldTextStyle,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.people,
+                                            color: Colors.black),
+                                        Text(
+                                          numberOfPeople.toString(),
+                                          style: boldTextStyle.copyWith(
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                    if (contactName.toLowerCase() != ownerName.toLowerCase())
+                                      Text(ownerName, style: normalTextStyle),
+                                    if (plateNo != 'N/A')
+                                      Text(plateNo, style: boldTextStyle),
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          IconButton(
+                                            icon: Container(
+                                              decoration: const BoxDecoration(
+                                                color: green,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: const Icon(
+                                                Icons.phone,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _makePhoneCall(apartment.phone);
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.blue,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: const Icon(
+                                                Icons.email,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _sendEmail(apartment.email);
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.orange,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: const Icon(
+                                                Icons.sms,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _sendSMS(apartment.phone);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
 
-                      try {
-                        final fees = await apiService.fetchFees(
-                            apartmentId, apartment.hotelId);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailPage(
-                              apartment: apartment,
-                              fees: fees,
-                            ),
-                          ),
-                        );
-                      } catch (e) {
-                        print('Failed to load fees: $e');
-                      }
-                    },
-                  ),
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.phone, color: Colors.green),
-                          onPressed: () {
-                            _makePhoneCall(apartment.phone);
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.email, color: Colors.blue),
-                          onPressed: () {
-                            // _sendEmail(apartment.email);
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.message, color: Colors.green),
-                          onPressed: () {
-                            _sendSMS(apartment.phone);
-                          },
+                        if(apartment.balance!=null && apartment.balance!=0)
+                        Text(
+                          apartment.balance.toString() + ' TL',
+                          style: boldTextStyle.copyWith(color: red),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
         Positioned(
-          left: 9.0,
+          right: 5.0,
           top: 5.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
@@ -124,14 +192,20 @@ class ApartmentCard extends StatelessWidget {
               color: cardColor,
               shape: BoxShape.circle,
             ),
-            child: Text(
-              flatNumber.toString(),
-              style: boldTextStyle,
+            child: Row(
+              children: [
+                Text(
+                  flatNumber.toString(),
+                  style: boldTextStyle.copyWith(color: Colors.black),
+                ),
+                const Icon(Icons.home, color: Colors.black),
+              ],
             ),
           ),
         ),
       ],
     );
+
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
@@ -143,14 +217,14 @@ class ApartmentCard extends StatelessWidget {
     }
   }
 
-  // Future<void> _sendEmail(String email) async {
-  //   final url = 'mailto:$email';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+  Future<void> _sendEmail(String email) async {
+    final url = 'mailto:$email';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   Future<void> _sendSMS(String phoneNumber) async {
     final url = 'sms:$phoneNumber';

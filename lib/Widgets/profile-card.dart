@@ -29,163 +29,141 @@ class ProfileCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (apartment.idNo != '')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "KİMLİK NUMARASI : ",
-                        style: boldTextStyle,
-                      ),
-                      Text(
-                        apartment.idNo.toString(),
-                        style: boldTextStyle,
-                      )
-                    ],
-                  ),
-                if (apartment.idNo != '') Divider(color: Colors.grey[400]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                IntrinsicHeight(
+                    child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "OTURAN :",
-                      style: boldTextStyle,
-                    ),
-                    Text(
-                      apartment.contactName,
-                      style: boldTextStyle,
-                    )
-                  ],
-                ),
-                Divider(color: Colors.grey[400]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "TELEFON : ",
-                      style: boldTextStyle,
-                    ),
-                    const SizedBox(width: 80),
-                    const Icon(Icons.phone, color: Colors.green),
-                    Text(
-                      apartment.phone,
-                      style: boldTextStyle,
-                    )
-                  ],
-                ),
-                Divider(color: Colors.grey[400]),
-                if (apartment.contactName != apartment.ownerName &&
-                    apartment.ownerName != '')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "MÜLK SAHİBİ : ",
-                        style: boldTextStyle,
-                      ),
-                      Text(
-                        apartment.ownerName,
-                        style: boldTextStyle,
-                      )
-                    ],
-                  ),
-                if (apartment.contactName != apartment.ownerName &&
-                    apartment.ownerName != '')
-                  Divider(color: Colors.grey[400]),
-                if (apartment.contactName != apartment.ownerName &&
-                    apartment.ownerName != '')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "TELEFON : ",
-                        style: boldTextStyle,
-                      ),
-                      const SizedBox(width: 80),
-                      const Icon(Icons.phone, color: Colors.green),
-                      Text(
-                        apartment.ownerPhone,
-                        style: boldTextStyle,
-                      )
-                    ],
-                  ),
-                if (apartment.contactName != apartment.ownerName &&
-                    apartment.ownerName != '')
-                  Divider(color: Colors.grey[400]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
+                    apartment.photoUrl != null && apartment.photoUrl.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage: NetworkImage(apartment.photoUrl),
+                            radius: 40,
+                          )
+                        : Icon(Icons.account_circle,
+                            size: 80, color: Colors.grey[400]),
+                    SizedBox(width: 10),
+                    Row(
                       children: [
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.people),
-                            const SizedBox(width: 8),
+                            if (apartment.idNo != null &&
+                                apartment.idNo.isNotEmpty)
+                              Text("KİMLİK NO:", style: boldTextStyle),
+                            Text("OTURAN:", style: boldTextStyle),
+                            Text("TELEFON:", style: boldTextStyle),
+                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
+                              Text("MÜLK SAHİBİ:", style: boldTextStyle),
+                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
+                              Text("TELEFON:", style: boldTextStyle),
+                          ],
+                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (apartment.idNo != null &&
+                                apartment.idNo.isNotEmpty)
+                              Text(apartment.idNo, style: normalTextStyle),
+                            Text(apartment.contactName, style: normalTextStyle),
+                            Text(apartment.phone, style: normalTextStyle),
+                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
+                              Text(apartment.ownerName, style: normalTextStyle),
+                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
+                              Text(apartment.ownerPhone,
+                                  style: normalTextStyle),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                )),
+                Divider(color: Colors.grey[400]),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(Icons.people, color: Colors.black),
+                            const SizedBox(width: 4),
                             Text(apartment.numberOfPeople.toString(),
-                                style: boldTextStyle),
+                                style: normalTextStyle),
                           ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(width: 5),
-                    const SizedBox(
-                      height: 40,
-                      child: VerticalDivider(
-                        width: 1,
-                        color: Colors.grey,
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Row(
+                      VerticalDivider(
+                        color: Colors.grey[400],
+                        thickness: 1,
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            const Icon(Icons.directions_car),
-                            const SizedBox(width: 8),
-                            Text(apartment.plateNo, style: boldTextStyle),
+                            const Icon(Icons.car_rental_outlined,
+                                color: Colors.black),
+                            const SizedBox(width: 4),
+                            Text(apartment.plateNo, style: normalTextStyle),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(color: Colors.grey[400]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Başlangıç Tarihi", style: boldTextStyle),
-                        Text(formatDate(apartment.startDate),
-                            style: boldTextStyle),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 40,
-                      child: VerticalDivider(
-                        width: 1,
-                        color: Colors.grey,
                       ),
-                    ),
-                    const SizedBox(width: 20),
-                    Column(
-                      children: [
-                        const Text("Bitiş Tarihi", style: boldTextStyle),
-                        Text(formatDate(apartment.endDate),
-                            style: boldTextStyle),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Divider(color: Colors.grey[400]),
-                Text("BALANCE : ${apartment.balance} TL", style: boldTextStyle),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Başlangıç Tarihi",
+                                    style: boldTextStyle),
+                                Text(formatDate(apartment.startDate),
+                                    style: normalTextStyle),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      VerticalDivider(
+                        color: Colors.grey[400],
+                        thickness: 1,
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Bitiş Tarihi",
+                                    style: boldTextStyle),
+                                Text(formatDate(apartment.endDate),
+                                    style: normalTextStyle),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
       Positioned(
-          right: 9.0,
+          left: 5.0,
           top: 5.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
@@ -193,11 +171,16 @@ class ProfileCard extends StatelessWidget {
               color: cardColor,
               shape: BoxShape.circle,
             ),
-            child: Text(
-              apartment.flatNumber.toString(),
-              style: boldTextStyle,
+            child: Row(
+              children: [
+                Text(
+                  apartment.flatNumber.toString(),
+                  style: boldTextStyle.copyWith(color: Colors.black),
+                ),
+                const Icon(Icons.home, color: Colors.black),
+              ],
             ),
-          ))
+          )),
     ]);
   }
 }

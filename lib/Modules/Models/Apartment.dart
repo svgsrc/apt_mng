@@ -17,6 +17,8 @@ class Apartment {
   final String startDate;
   final String endDate;
   final bool isDisabled;
+  final String photoUrl;
+  final String email;
 
   Apartment({
     required this.id,
@@ -35,6 +37,8 @@ class Apartment {
     required this.startDate,
     required this.endDate,
     required this.isDisabled,
+    required this.photoUrl,
+    required this.email,
   });
 
   factory Apartment.fromJson(Map<String, dynamic> json) {
@@ -55,6 +59,8 @@ class Apartment {
       startDate: json['STARTDATE'] ?? '',
       endDate: json['ENDDATE'] ?? '',
       isDisabled: json['ISDISABLED'] ?? false,
+      photoUrl: json['PHOTOURL'] ?? '',
+      email: json['EMAIL'] ?? '',
     );
   }
 }

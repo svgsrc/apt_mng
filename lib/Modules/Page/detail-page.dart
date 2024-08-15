@@ -47,75 +47,98 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final topPadding = mediaQuery.padding.top;
+    final apartmentBalance = widget.apartment.balance;
 
-    return Container(
-      padding: EdgeInsets.only(top: topPadding),
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 25,
-          backgroundColor: background,
-          flexibleSpace: Container(
-            color: primary,
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                  color: appText,
-                ),
-                Expanded(
-                  child: Text(
-                    widget.apartment.contactName,
-                    textAlign: TextAlign.center,
-                    style: normalTextStyle.copyWith(color: appText, fontSize: 20),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: topPadding),
+            child: Scaffold(
+              backgroundColor: background,
+              appBar: AppBar(
+                backgroundColor: background,
+                toolbarHeight: 25,
+                flexibleSpace: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [appBar2, appBar1],
+                    ),
+                  ),
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
+                        color: appText,
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.apartment.contactName,
+                          textAlign: TextAlign.center,
+                          style: normalTextStyle.copyWith(
+                              color: appText, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(width: 48),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 48),
-              ],
+                automaticallyImplyLeading: false,
+              ),
+              body: StreamBuilder(
+                stream: apiService.combinedStream$,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: primary),
+                    );
+                  } else if (!snapshot.hasData ||
+                      snapshot.data!.item1 == null ||
+                      snapshot.data!.item1!.isEmpty) {
+                    return const Center(child: Text('No apartments found.'));
+                  } else {
+                    Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
+                    List<Fee> fees = feesMap[widget.apartment.id] ?? [];
+
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProfileCard(apartment: widget.apartment),
+                          FeesList(fees: fees),
+                          SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0), // Adjust for bottom card space if needed
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
-
-          automaticallyImplyLeading: false,
-        ),
-        body: StreamBuilder(
-          stream: apiService.combinedStream$,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: primary),
-              );
-            } else if (!snapshot.hasData ||
-                snapshot.data!.item1 == null ||
-                snapshot.data!.item1!.isEmpty) {
-              return const Center(child: Text('No apartments found.'));
-            } else {
-              Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
-              List<Fee> fees = feesMap[widget.apartment.id] ?? [];
-
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top),
-                      child: ProfileCard(apartment: widget.apartment),
-                    ),
-                    FeesList(fees: fees),
-                  ],
+          if (apartmentBalance > 0)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: red,
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "BAKİYE: $apartmentBalance TL BORÇ",
+                  style: boldTextStyle.copyWith(color: appText),
+                  textAlign: TextAlign.center,
                 ),
-              );
-            }
-          },
-        ),
+              ),
+            ),
+
+        ],
       ),
     );
   }
 }
-//title: Text(
-//               textAlign: TextAlign.center,
-//                 widget.apartment.contactName,
-//               style: normalTextStyle.copyWith(color: appText, fontSize: 20)
-//             ),
+

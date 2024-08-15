@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 const transparent = Colors.transparent;
-const primary = Colors.blueAccent;
-const background = Colors.white;
+const primary = Color(0xFF014f9a);
+const background =Color(0xFFF5F5F5);
 const appText = Colors.white;
-final cardColor= Colors.grey[200];
+final cardColor= Colors.white;
+const red= Color(0xFFDF0727);
+const appBar1= Color(0xFF014f9a);
+const appBar2= Color(0xFF303F9F);
+const green= Colors.green;
+
 
 double getScreenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double getScreenHeight(BuildContext context) => MediaQuery.of(context).size.height;
@@ -26,14 +31,14 @@ const TextStyle normalTextStyle = TextStyle(
 
 final OutlineInputBorder enableBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(10),
-  borderSide: const BorderSide(
+  borderSide:const BorderSide(
     color: primary,
   ),
 );
 
 final OutlineInputBorder focusBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(10),
-  borderSide: const BorderSide(
+  borderSide:const  BorderSide(
     color: primary,
   ),
 );

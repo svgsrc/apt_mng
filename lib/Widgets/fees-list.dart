@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
-import 'package:talya_flutter/Widgets/payment-dialog.dart';
+import 'package:talya_flutter/Modules/Page/credit-card-form.dart';
+
 
 class FeesList extends StatelessWidget {
   final List<Fee> fees;
@@ -11,7 +12,7 @@ class FeesList extends StatelessWidget {
 
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
-    return DateFormat('dd.MM.yyyy').format(parsedDate);
+    return DateFormat('d/M/yy').format(parsedDate);
   }
 
   @override
@@ -32,69 +33,127 @@ class FeesList extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+              child: Row(
                 children: [
-                  ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        color: (fee.paymentAmount == 0 ||
+                                fee.paymentAmount == null ||
+                                fee.paymentAmount < fee.feeAmount)
+                            ? red
+                            : Colors.black,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        formatDate(fee.feeDate),
+                        style: normalTextStyle.copyWith(
+                          fontSize: 14,
+                          color: (fee.paymentAmount == 0 ||
+                                  fee.paymentAmount == null ||
+                                  fee.paymentAmount < fee.feeAmount)
+                              ? red
+                              : Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Text(
+                      fee.feeTypeId == 1
+                          ? 'Aylık Ücret'
+                          : fee.feeTypeId == 2
+                              ? 'Genel Giderler'
+                              : fee.feeTypeId == 3
+                                  ? 'Demirbaş'
+                                  : 'Diğer',
+                      style: boldTextStyle.copyWith(
+                        color: (fee.paymentAmount == 0 ||
+                                fee.paymentAmount == null ||
+                                fee.paymentAmount < fee.feeAmount)
+                            ? red
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Container(
+                    width: 80,
+                    alignment: Alignment.centerLeft,
+                    child:Text(
+                      ' ${fee.feeAmount} TL',
+                      style: normalTextStyle.copyWith(
+                        fontSize: 14,
+                        color: (fee.paymentAmount == 0 ||
+                            fee.paymentAmount == null ||
+                            fee.paymentAmount < fee.feeAmount)
+                            ? red
+                            : Colors.black,
+                      ),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  if (fee.paymentDate != null && fee.paymentDate != '')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          fee.feeTypeId == 1
-                              ? 'Aylık Ücret'
-                              : fee.feeTypeId == 2
-                                  ? 'Genel Giderler'
-                                  : fee.feeTypeId == 3
-                                      ? 'Demirbaş'
-                                      : 'Diğer',
-                          style: boldTextStyle,
-                        ),
-                        Divider(color: Colors.grey[400]),
-                      ],
-                    ),
-                    subtitle: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          spacing: 8.0,
-                          runSpacing: 4.0,
-                          children: [
-                            Text(
-                              'Ücret Tarihi: ${formatDate(fee.feeDate)}',
-                              style: normalTextStyle.copyWith(fontSize: 14),
-                            ),
-                            Text(
-                              ' ${fee.feeAmount} TL',
-                              style: normalTextStyle.copyWith(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        if (fee.paymentDate != null && fee.paymentDate != '')
-                          Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: [
-                              Text(
-                                'Ödeme Tarihi: ${formatDate(fee.paymentDate!)}',
-                                style: normalTextStyle.copyWith(fontSize: 14),
-                              ),
-                              Text(
-                                ' ${fee.paymentAmount} TL',
-                                style: normalTextStyle.copyWith(fontSize: 14),
-                              ),
-                            ],
+
+                          fee.paymentAmount.toString(),
+                          style: boldTextStyle.copyWith(
+                            color: (fee.paymentAmount == 0 ||
+                                    fee.paymentAmount == null ||
+                                    fee.paymentAmount < fee.feeAmount)
+                                ? red
+                                : Colors.black,
                           ),
+                        ),
+                        Text(
+                          formatDate(fee.paymentDate!),
+                          style: normalTextStyle.copyWith(
+                            fontSize: 10,
+                            color: (fee.paymentAmount == 0 ||
+                                    fee.paymentAmount == null ||
+                                    fee.paymentAmount < fee.feeAmount)
+                                ? red
+                                : Colors.black,
+                          ),
+                        ),
                       ],
                     ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => PaymentDialog(fees: [],),
-                      );
-                    },
-                  ),
+                  if (fee.paymentAmount == null || fee.paymentAmount == 0.0)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: green,
+                        borderRadius: radius,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) => CreditCardFormScreen(),
+                          ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(50, 40),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          'Öde',
+                          style: boldTextStyle.copyWith(
+                            color: appText,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

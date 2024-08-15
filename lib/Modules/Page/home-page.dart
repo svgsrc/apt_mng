@@ -32,12 +32,18 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.only(top: topPadding),
       child: Scaffold(
       appBar: AppBar(
+        backgroundColor: background,
         toolbarHeight: 25,
-        backgroundColor: primary,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [appBar2, appBar1],
+            ),
+          ),
           height: 50,
-          color: primary,
          child:Center(
            child: StreamBuilder(
              stream: apiService.apartments$.stream,
@@ -66,16 +72,24 @@ class _HomePageState extends State<HomePage> {
           stream: apiService.apartments$.stream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator(color:Colors.blue));
+              return const Center(child: CircularProgressIndicator(color:primary));
             }
-
             final apartments = snapshot.data!;
 
-            return ListView.builder(
-              itemCount: apartments.length,
-              itemBuilder: (context, index) {
-                return ApartmentCard(apartment: apartments[index]);
-              },
+            apartments.sort((a, b) {
+              int flatNumberA = int.tryParse(a.flatNumber ?? '0') ?? 0;
+              int flatNumberB = int.tryParse(b.flatNumber ?? '0') ?? 0;
+              return flatNumberA.compareTo(flatNumberB);
+            });
+
+            return Container(
+              color:background,
+                child:ListView.builder(
+                  itemCount: apartments.length,
+                  itemBuilder: (context, index) {
+                    return ApartmentCard(apartment: apartments[index]);
+                  },
+                )
             );
           },
         ),
