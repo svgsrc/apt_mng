@@ -1,4 +1,4 @@
-import 'package:talya_flutter/Modules/Models/Fee.dart';
+
 
 class Apartment {
   final int id;
