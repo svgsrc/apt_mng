@@ -126,7 +126,7 @@ class ApartmentCard extends StatelessWidget {
                                           IconButton(
                                             icon: Container(
                                               decoration: const BoxDecoration(
-                                                color: Colors.blue,
+                                                color: blue,
                                                 shape: BoxShape.circle,
                                               ),
                                               padding: const EdgeInsets.all(6.0),
@@ -142,7 +142,7 @@ class ApartmentCard extends StatelessWidget {
                                           IconButton(
                                             icon: Container(
                                               decoration: const BoxDecoration(
-                                                color: Colors.orange,
+                                                color: orange,
                                                 shape: BoxShape.circle,
                                               ),
                                               padding: const EdgeInsets.all(6.0),

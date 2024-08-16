@@ -7,6 +7,7 @@ class Fee {
   final double feeAmount;
   final String paymentDate;
   final double paymentAmount;
+  final String description;
 
   Fee({
     required this.id,
@@ -17,6 +18,7 @@ class Fee {
     required this.feeAmount,
     required this.paymentDate,
     required this.paymentAmount,
+    required this.description,
   });
 
   factory Fee.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Fee {
       feeAmount: (json['FEEAMOUNT'] ?? 0.0).toDouble(),
       paymentDate: json['PAYMENTDATE'] ?? '',
       paymentAmount: (json['PAYMENTAMOUNT'] ?? 0.0).toDouble(),
+      description: json['DESCRIPTION'] ?? '',
     );
   }
 }

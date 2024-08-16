@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 const transparent = Colors.transparent;
-const primary = Color(0xFF014f9a);
+const primary = Color(0xFF557571);
 const background =Color(0xFFF5F5F5);
 const appText = Colors.white;
 final cardColor= Colors.white;
-const red= Color(0xFFDF0727);
-const appBar1= Color(0xFF014f9a);
-const appBar2= Color(0xFF303F9F);
-const green= Colors.green;
+const red= Color(0xFFDC3535);
+const appBar1= Color(0xFF557571);
+const appBar2= Color(0xFF557571);
+const green= Color(0xFF95CD41);
+const orange= Color(0xFFFF6500);
+const blue=Color(0xFF64CCDA);
 
 
 double getScreenWidth(BuildContext context) => MediaQuery.of(context).size.width;
