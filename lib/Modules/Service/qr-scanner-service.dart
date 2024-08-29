@@ -18,19 +18,19 @@ class QRScannerController {
   void onQRViewCreated(QRViewController controller, BuildContext context) async {
     qrController = controller;
 
-    // bool hasScannedBefore = await checkIfScannedBefore();
-    // if (hasScannedBefore) {
-    //   final prefs = await SharedPreferences.getInstance();
-    //   List<String> savedCodes = prefs.getStringList('saved_codes') ?? [];
-    //   if (savedCodes.isNotEmpty) {
-    //     String lastCode = savedCodes.last;
-    //     List<String> splitData = lastCode.split(",");
-    //     int? hotelId = int.tryParse(splitData[0]);
-    //     String blockName = splitData[1];
-    //     navigateToPage(blockName, hotelId!, context);
-    //     return;
-    //   }
-    // }
+    bool hasScannedBefore = await checkIfScannedBefore();
+    if (hasScannedBefore) {
+      final prefs = await SharedPreferences.getInstance();
+      List<String> savedCodes = prefs.getStringList('saved_codes') ?? [];
+      if (savedCodes.isNotEmpty) {
+        String lastCode = savedCodes.last;
+        List<String> splitData = lastCode.split(",");
+        int? hotelId = int.tryParse(splitData[0]);
+        String blockName = splitData[1];
+        navigateToPage(blockName, hotelId!, context);
+        return;
+      }
+    }
 
     controller.scannedDataStream.listen((scanData) async {
       String qrText = scanData.code ?? '';

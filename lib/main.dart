@@ -11,7 +11,7 @@ Future<void> main() async {
   setupLocator();
   final prefs=await SharedPreferences.getInstance();
   List<String>? savedCodes = prefs.getStringList('saved_codes');
-  runApp(MyApp());
+  runApp(const MyApp() );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,8 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
 
     return const MaterialApp(
       debugShowCheckedModeBanner: false,

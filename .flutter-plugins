@@ -1,11 +1,11 @@
 # This is a generated file; do not edit or check into version control.
 flutter_credit_card=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_credit_card-4.0.1\\
-mobile_scanner=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\mobile_scanner-5.1.1\\
+mobile_scanner=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\mobile_scanner-5.2.1\\
 path_provider_linux=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_linux-2.2.1\\
 path_provider_windows=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_windows-2.3.0\\
 qr_code_scanner=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\qr_code_scanner-1.0.1\\
-shared_preferences=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences-2.3.1\\
-shared_preferences_android=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences_android-2.3.1\\
+shared_preferences=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences-2.3.2\\
+shared_preferences_android=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences_android-2.3.2\\
 shared_preferences_foundation=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences_foundation-2.5.2\\
 shared_preferences_linux=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences_linux-2.4.1\\
 shared_preferences_web=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\shared_preferences_web-2.4.2\\
@@ -18,6 +18,9 @@ url_launcher_macos=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev
 url_launcher_web=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\url_launcher_web-2.3.3\\
 url_launcher_windows=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\url_launcher_windows-3.1.2\\
 video_player=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\video_player-2.9.1\\
-video_player_android=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\video_player_android-2.6.0\\
+video_player_android=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\video_player_android-2.7.1\\
 video_player_avfoundation=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\video_player_avfoundation-2.6.1\\
 video_player_web=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\video_player_web-2.3.2\\
+webview_flutter=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter-4.8.0\\
+webview_flutter_android=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter_android-3.16.7\\
+webview_flutter_wkwebview=C:\\Users\\sevgi\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter_wkwebview-3.14.0\\

@@ -8,6 +8,8 @@ class Fee {
   final String paymentDate;
   final double paymentAmount;
   final String description;
+  final String uid;
+  bool isCompleted;
 
   Fee({
     required this.id,
@@ -19,6 +21,8 @@ class Fee {
     required this.paymentDate,
     required this.paymentAmount,
     required this.description,
+    required this.uid,
+    this.isCompleted = false,
   });
 
   factory Fee.fromJson(Map<String, dynamic> json) {
@@ -32,6 +36,7 @@ class Fee {
       paymentDate: json['PAYMENTDATE'] ?? '',
       paymentAmount: (json['PAYMENTAMOUNT'] ?? 0.0).toDouble(),
       description: json['DESCRIPTION'] ?? '',
+      uid: json['UID'] ?? '',
     );
   }
 }

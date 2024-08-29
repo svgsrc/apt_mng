@@ -36,13 +36,7 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: 25,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [appBar2, appBar1],
-            ),
-          ),
+          color: primary,
           height: 50,
          child:Center(
            child: StreamBuilder(
@@ -55,11 +49,11 @@ class _HomePageState extends State<HomePage> {
                  );
                }
                final apartments = snapshot.data!;
-               final titleText = "${apartments.isNotEmpty ? apartments[0].name : ''} - ${widget.blockName} ";
+               final titleText = "${apartments.isNotEmpty ? apartments[0].name.toUpperCase() : ''} - ${widget.blockName.toUpperCase()} ";
                return Text(
                  textAlign: TextAlign.center,
                  titleText,
-                 style: normalTextStyle.copyWith(color: appText, fontSize: 20),
+                 style: boldTextStyle.copyWith(color: appText, fontSize: 20),
                );
              },
            ),

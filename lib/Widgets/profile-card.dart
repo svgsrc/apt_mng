@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 class ProfileCard extends StatelessWidget {
   final Apartment apartment;
@@ -9,8 +11,9 @@ class ProfileCard extends StatelessWidget {
   const ProfileCard({super.key, required this.apartment});
 
   String formatDate(String date) {
+    initializeDateFormatting('tr_TR', null);
     final parsedDate = DateTime.parse(date);
-    return DateFormat('dd.MM.yyyy').format(parsedDate);
+    return DateFormat('dd MMM yyyy').format(parsedDate);
   }
 
   @override
@@ -40,7 +43,7 @@ class ProfileCard extends StatelessWidget {
                           )
                         : Icon(Icons.account_circle,
                             size: 80, color: Colors.grey[400]),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Row(
                       children: [
                         Column(
@@ -48,16 +51,16 @@ class ProfileCard extends StatelessWidget {
                           children: [
                             if (apartment.idNo != null &&
                                 apartment.idNo.isNotEmpty)
-                              Text("KİMLİK NO:", style: boldTextStyle),
-                            Text("OTURAN:", style: boldTextStyle),
-                            Text("TELEFON:", style: boldTextStyle),
+                              const Text("KİMLİK NO:", style: boldTextStyle),
+                            const Text("OTURAN:", style: boldTextStyle),
+                            const Text("TELEFON:", style: boldTextStyle),
                             if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              Text("MÜLK SAHİBİ:", style: boldTextStyle),
+                              const Text("EV SAHİBİ:", style: boldTextStyle),
                             if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              Text("TELEFON:", style: boldTextStyle),
+                              const Text("TELEFON:", style: boldTextStyle),
                           ],
                         ),
-
+                        const SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -83,7 +86,8 @@ class ProfileCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Icon(Icons.people, color: Colors.black),
                             const SizedBox(width: 4),
@@ -99,8 +103,8 @@ class ProfileCard extends StatelessWidget {
                       ),
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Icon(Icons.car_rental_outlined,
                                 color: Colors.black),
@@ -118,10 +122,11 @@ class ProfileCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Text("Başlangıç Tarihi",
                                     style: boldTextStyle),
@@ -139,11 +144,11 @@ class ProfileCard extends StatelessWidget {
                       ),
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Text("Bitiş Tarihi",
                                     style: boldTextStyle),

@@ -48,6 +48,10 @@ class _DetailPageState extends State<DetailPage> {
     final mediaQuery = MediaQuery.of(context);
     final topPadding = mediaQuery.padding.top;
     final apartmentBalance = widget.apartment.balance;
+    // Map<int, double> totalFees = {};
+    // for (var fee in widget.fees) {
+    //   totalFees[widget.apartment.id] = (totalFees[widget.apartment.id] ?? 0) + fee.feeAmount;
+    // }
 
     return Scaffold(
       body: Stack(
@@ -60,13 +64,7 @@ class _DetailPageState extends State<DetailPage> {
                 backgroundColor: background,
                 toolbarHeight: 25,
                 flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [appBar2, appBar1],
-                    ),
-                  ),
+                  color: primary,
                   height: 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,9 +76,9 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       Expanded(
                         child: Text(
-                          widget.apartment.contactName,
+                          widget.apartment.contactName.toUpperCase(),
                           textAlign: TextAlign.center,
-                          style: normalTextStyle.copyWith(
+                          style: boldTextStyle.copyWith(
                               color: appText, fontSize: 20),
                         ),
                       ),
@@ -111,7 +109,8 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           ProfileCard(apartment: widget.apartment),
                           FeesList(fees: fees),
-                          SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0), // Adjust for bottom card space if needed
+                          SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0),
+                          // Adjust for bottom card space if needed
                         ],
                       ),
                     );
@@ -120,6 +119,21 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
+          // if(apartmentBalance > 0 )
+          //   Positioned(
+          //     left: 0,
+          //     right: 0,
+          //     bottom: 40,
+          //     child: Container(
+          //       color:appText,
+          //       padding: const EdgeInsets.all(12.0),
+          //       child: Text(
+          //         "TOPLAM: ${totalFees} TL",
+          //         style: boldTextStyle.copyWith(color: Colors.black),
+          //         textAlign: TextAlign.center,
+          //       ),
+          //     ),
+          //   ),
           if (apartmentBalance > 0)
             Positioned(
               left: 0,
@@ -135,10 +149,10 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
             ),
-
         ],
       ),
     );
   }
 }
 
+// widget.fees.map((fee) => fee.feeAmount).reduce((a, b) => a + b)
