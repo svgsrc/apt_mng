@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
+import 'package:talya_flutter/Modules/Page/webView-page.dart';
 
 class CreditCardFormScreen extends StatefulWidget {
   final List<Fee> fees;
@@ -40,20 +41,19 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
   }
 
   void fetchPaymentDetails() {
-    final fetchedFee = widget.fees.firstWhere(
-            (fee) => !fee.isCompleted,
+    final fetchedFee = widget.fees.firstWhere((fee) => !fee.isCompleted,
         orElse: () => Fee(
-          id: 0,
-          hotelId: 0,
-          flatId: 0,
-          feeTypeId: 0,
-          feeDate: '',
-          feeAmount: 0.0,
-          paymentDate: DateTime.now().toString(),
-          description: '',
-          paymentAmount: 0.0,
-          uid: '',
-        ));
+              id: 0,
+              hotelId: 0,
+              flatId: 0,
+              feeTypeId: 0,
+              feeDate: '',
+              feeAmount: 0.0,
+              paymentDate: DateTime.now().toString(),
+              description: '',
+              paymentAmount: 0.0,
+              uid: '',
+            ));
 
     setState(() {
       paymentAmount = fetchedFee.paymentAmount.toStringAsFixed(2);
@@ -85,7 +85,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
       "redirectMode": "frontend",
       "hashData": generateHashData(),
       "selectedInstallments":
-      '{"installment":"$selectedInstallments","finalPrice":"$paymentAmount"}',
+          '{"installment":"$selectedInstallments","finalPrice":"$paymentAmount"}',
       "isTest": true,
     };
 
@@ -99,16 +99,25 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        if (responseData['success']) {
-          print('Payment Successful: ${responseData}');
-        } else {
-          print('Payment Failed: ${responseData['error']}');
-        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebViewScreen(
+                htmlContent: responseData['data']),
+          ),
+        ).then((paymentResult) {
+          if (responseData == true) {
+            print('Ödeme Başarılı');
+          } else {
+            print('Ödeme Başarısız: ${responseData['error']}');
+          }
+        });
       } else {
-        print('Failed to process payment. Status Code: ${response.statusCode}');
+        print(
+            'Ödeme işleme başarısız oldu. Durum Kodu: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error while processing payment: $e');
+      print('Ödeme işleme hatası: $e');
     }
   }
 
@@ -141,18 +150,21 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                 ? List<String>.from(bankConfig['currency'])
                 : [];
             installmentOptions = bankConfig['installment'] != null
-                ? List<String>.from(bankConfig['installment'].map((item) => item.toString()))
+                ? List<String>.from(
+                    bankConfig['installment'].map((item) => item.toString()))
                 : [];
             currency = currencyOptions.isNotEmpty ? currencyOptions[0] : '';
           });
 
-          print('Currency: $currency, Bank: $bank, Installments: $installmentOptions');
+          print(
+              'Currency: $currency, Bank: $bank, Installments: $installmentOptions');
         } else {
           print('Bank bilgisi alınamadı veya başarı durumu false döndü.');
         }
       } else {
         final errorData = jsonDecode(response.body);
-        print('BIN bilgileri alınamadı. Kod: ${response.statusCode}, Hata: ${errorData['error']}');
+        print(
+            'BIN bilgileri alınamadı. Kod: ${response.statusCode}, Hata: ${errorData['error']}');
       }
     } catch (e) {
       print('Hata: $e');
@@ -186,7 +198,8 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                   child: Text(
                     "KREDİ KARTI BİLGİLERİ",
                     textAlign: TextAlign.center,
-                    style: normalTextStyle.copyWith(color: appText, fontSize: 20),
+                    style:
+                        normalTextStyle.copyWith(color: appText, fontSize: 20),
                   ),
                 ),
                 const SizedBox(width: 48),
@@ -214,11 +227,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                   child: Column(
                     children: [
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: border,
-                            labelStyle: normalTextStyle.copyWith(color: primary),
+                            labelStyle:
+                                normalTextStyle.copyWith(color: primary),
                             labelText: 'Kart Numarası',
                             enabledBorder: enableBorder,
                             focusedBorder: focusBorder,
@@ -235,11 +250,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: border,
-                            labelStyle: normalTextStyle.copyWith(color: primary),
+                            labelStyle:
+                                normalTextStyle.copyWith(color: primary),
                             labelText: 'Kart Sahibinin Adı',
                             enabledBorder: enableBorder,
                             focusedBorder: focusBorder,
@@ -257,11 +274,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                         children: [
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               child: TextFormField(
                                 decoration: InputDecoration(
                                   border: border,
-                                  labelStyle: normalTextStyle.copyWith(color: primary),
+                                  labelStyle:
+                                      normalTextStyle.copyWith(color: primary),
                                   labelText: 'MM/YY',
                                   enabledBorder: enableBorder,
                                   focusedBorder: focusBorder,
@@ -284,11 +303,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           ),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               child: TextFormField(
                                 decoration: InputDecoration(
                                   border: border,
-                                  labelStyle: normalTextStyle.copyWith(color: primary),
+                                  labelStyle:
+                                      normalTextStyle.copyWith(color: primary),
                                   labelText: 'CVV',
                                   enabledBorder: enableBorder,
                                   focusedBorder: focusBorder,
@@ -311,22 +332,28 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           children: [
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 child: DropdownButtonFormField<String>(
                                   decoration: InputDecoration(
                                     border: border,
-                                    labelStyle: normalTextStyle.copyWith(color: primary),
+                                    labelStyle: normalTextStyle.copyWith(
+                                        color: primary),
                                     labelText: 'Para Birimi',
                                     enabledBorder: enableBorder,
                                     focusedBorder: focusBorder,
                                   ),
-                                  value: currencyOptions.contains(currency) ? currency : null,
+                                  value: currencyOptions.contains(currency)
+                                      ? currency
+                                      : null,
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       currency = newValue!;
                                     });
                                   },
-                                  items: currencyOptions.map<DropdownMenuItem<String>>((String value) {
+                                  items: currencyOptions
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -337,11 +364,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     border: border,
-                                    labelStyle: normalTextStyle.copyWith(color: primary),
+                                    labelStyle: normalTextStyle.copyWith(
+                                        color: primary),
                                     labelText: 'Banka',
                                     enabledBorder: enableBorder,
                                     focusedBorder: focusBorder,
@@ -356,34 +385,42 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                       ],
                       if (installmentOptions.isNotEmpty)
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
                           child: DropdownButtonFormField<String>(
                             decoration: InputDecoration(
                               border: border,
-                              labelStyle: normalTextStyle.copyWith(color: primary),
+                              labelStyle:
+                                  normalTextStyle.copyWith(color: primary),
                               labelText: 'Taksit Seçenekleri',
                               enabledBorder: enableBorder,
                               focusedBorder: focusBorder,
                             ),
-                            value: selectedInstallments.isNotEmpty ? selectedInstallments : null,
+                            value: selectedInstallments.isNotEmpty
+                                ? selectedInstallments
+                                : null,
                             onChanged: (String? newValue) {
                               setState(() {
                                 selectedInstallments = newValue!;
                               });
                             },
-                            items: installmentOptions.map<DropdownMenuItem<String>>((String value) {
+                            items: installmentOptions
+                                .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
                               );
                             }).toList(),
                           ),
-                        ),Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: border,
-                            labelStyle: normalTextStyle.copyWith(color: primary),
+                            labelStyle:
+                                normalTextStyle.copyWith(color: primary),
                             labelText: 'Ödeme Tutarı',
                             enabledBorder: enableBorder,
                             focusedBorder: focusBorder,
@@ -391,13 +428,11 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
-                              paymentAmount= value;
+                              paymentAmount = value;
                             });
-
                           },
                         ),
                       ),
-
                       Container(
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
@@ -416,7 +451,8 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           ),
                           child: Text(
                             'Öde',
-                            style: boldTextStyle.copyWith(color: appText, fontSize: 14),
+                            style: boldTextStyle.copyWith(
+                                color: appText, fontSize: 14),
                           ),
                         ),
                       )

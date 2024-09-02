@@ -19,11 +19,27 @@ class _WebViewScreenState extends State<WebViewScreen> {
     super.initState();
     webController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+          NavigationDelegate(
+            onUrlChange: (change) {
+              if(change.url == 'https://vpos-demo.elektraweb.io/success'){
+                Navigator.pop(context, [true]);
+              }
+            },
+            onPageStarted: (String url) {},
+            onPageFinished: (String url) {},
+            onHttpError: (HttpResponseError error) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              return NavigationDecision.navigate;
+            },
+          ))
       ..loadRequest(Uri.dataFromString(
         widget.htmlContent,
         mimeType: 'text/html',
         encoding: Encoding.getByName('utf-8'),
-      ));
+      ))
+    ;
   }
 
   @override
@@ -32,7 +48,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
       appBar: AppBar(
         title: Text('SMS Doğrulama'),
       ),
-      body: WebViewWidget(controller: webController),
+      body: WebViewWidget(
+        controller: webController,
+      ),
     );
   }
 }
