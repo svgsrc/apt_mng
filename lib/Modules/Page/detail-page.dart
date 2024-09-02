@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
+import 'package:talya_flutter/Modules/Page/home-page.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talya_flutter/Widgets/fees-list.dart';
@@ -11,6 +12,7 @@ import 'package:talya_flutter/Widgets/profile-card.dart';
 class DetailPage extends StatefulWidget {
   final Apartment apartment;
   final List<Fee> fees;
+
 
   DetailPage({required this.apartment, required this.fees});
 
@@ -48,10 +50,9 @@ class _DetailPageState extends State<DetailPage> {
     final mediaQuery = MediaQuery.of(context);
     final topPadding = mediaQuery.padding.top;
     final apartmentBalance = widget.apartment.balance;
-    // Map<int, double> totalFees = {};
-    // for (var fee in widget.fees) {
-    //   totalFees[widget.apartment.id] = (totalFees[widget.apartment.id] ?? 0) + fee.feeAmount;
-    // }
+    final blockName = widget.apartment.blockName;
+    final hotelId = widget.apartment.hotelId;
+
 
     return Scaffold(
       body: Stack(
@@ -71,7 +72,12 @@ class _DetailPageState extends State<DetailPage> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(blockName: blockName, hotelId: hotelId),
+                          ),
+                        ),
                         color: appText,
                       ),
                       Expanded(
@@ -108,9 +114,9 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ProfileCard(apartment: widget.apartment),
-                          FeesList(fees: fees),
+                          FeesList(fees: fees, apartment: widget.apartment,),
                           SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0),
-                          // Adjust for bottom card space if needed
+
                         ],
                       ),
                     );
@@ -128,7 +134,7 @@ class _DetailPageState extends State<DetailPage> {
           //       color:appText,
           //       padding: const EdgeInsets.all(12.0),
           //       child: Text(
-          //         "TOPLAM: ${totalFees} TL",
+          //         "TOPLAM: ${1} TL",
           //         style: boldTextStyle.copyWith(color: Colors.black),
           //         textAlign: TextAlign.center,
           //       ),
@@ -155,4 +161,3 @@ class _DetailPageState extends State<DetailPage> {
   }
 }
 
-// widget.fees.map((fee) => fee.feeAmount).reduce((a, b) => a + b)

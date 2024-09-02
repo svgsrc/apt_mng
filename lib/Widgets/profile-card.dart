@@ -13,7 +13,7 @@ class ProfileCard extends StatelessWidget {
   String formatDate(String date) {
     initializeDateFormatting('tr_TR', null);
     final parsedDate = DateTime.parse(date);
-    return DateFormat('dd MMM yyyy').format(parsedDate);
+    return DateFormat('dd MMM yyyy', 'tr_TR').format(parsedDate);
   }
 
   @override

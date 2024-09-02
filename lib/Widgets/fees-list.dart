@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
 import 'package:talya_flutter/Modules/Page/credit-card-form.dart';
 
 class FeesList extends StatefulWidget {
   final List<Fee> fees;
+  final Apartment apartment;
 
-  const FeesList({super.key, required this.fees});
+  const FeesList({super.key, required this.fees, required this.apartment});
 
   @override
   _FeesListState createState() => _FeesListState();
@@ -77,8 +79,7 @@ class _FeesListState extends State<FeesList> {
                     ),
                   ],
                 ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                Container(
                     child: myDivider),
               ],
             ),
@@ -228,6 +229,7 @@ class _FeesListState extends State<FeesList> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CreditCardFormScreen(
+                                                        apartment: widget.apartment,
                                                     fees: widget.fees,
                                                   ),
                                                 ),
@@ -255,7 +257,7 @@ class _FeesListState extends State<FeesList> {
                               ],
                             ),
                             if (!_isExpandedList[
-                                index]  )
+                                index]  && fee.description.isNotEmpty )
                               Icon(
                                 Icons.keyboard_arrow_down,
                                 color: isPaymentIncomplete ? red : Colors.black,
@@ -265,7 +267,7 @@ class _FeesListState extends State<FeesList> {
                         ),
                       ),
                       if (_isExpandedList[
-                          index] )
+                          index] && fee.description.isNotEmpty)
                         Column(
                           children: [
                             Padding(
@@ -307,6 +309,7 @@ class _FeesListState extends State<FeesList> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CreditCardFormScreen(
+                                                        apartment: widget.apartment,
                                                     fees: widget.fees,
                                                   ),
                                                 ),

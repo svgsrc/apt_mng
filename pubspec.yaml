@@ -23,6 +23,7 @@ dependencies:
   video_player: ^2.2.19
   flutter_credit_card: ^4.0.1
   webview_flutter: ^4.8.0
+  lottie: ^3.1.2
 
 
 dev_dependencies:
@@ -41,6 +42,8 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/failure-animation.json
+    - assets/success-animation.json
 
 
   fonts:

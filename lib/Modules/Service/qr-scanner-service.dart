@@ -34,7 +34,6 @@ class QRScannerController {
 
     controller.scannedDataStream.listen((scanData) async {
       String qrText = scanData.code ?? '';
-      print("QR Text:$qrText");
 
       List<String> splitData = qrText.split(",");
       if (splitData.length == 2) {

@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
 import 'package:talya_flutter/Modules/Page/webView-page.dart';
+import 'package:talya_flutter/Modules/Models/Apartment.dart';
 
 class CreditCardFormScreen extends StatefulWidget {
   final List<Fee> fees;
+  final Apartment apartment;
 
-  CreditCardFormScreen({required this.fees});
+  CreditCardFormScreen({required this.fees, required this.apartment});
 
   @override
   _CreditCardFormScreenState createState() => _CreditCardFormScreenState();
@@ -56,8 +58,10 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
             ));
 
     setState(() {
-      paymentAmount = fetchedFee.paymentAmount.toStringAsFixed(2);
-      feeUid = fetchedFee.uid; // Fee UID
+      paymentAmount = fetchedFee.paymentAmount != null
+          ? fetchedFee.paymentAmount.toStringAsFixed(2)
+          : '0.00';
+      feeUid = fetchedFee.uid; // Fee UIDID
     });
   }
 
@@ -78,7 +82,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
       "expiryMonth": expiryMonth,
       "expiryYear": expiryYear,
       "cvv": cvv,
-      "amount": paymentAmount,
+      "amount": paymentAmount.isNotEmpty ? paymentAmount : '0.00',
       "currency": currency,
       "bank": bank,
       "returnUrl": "http://localhost:3000/checkResponse",
@@ -103,11 +107,14 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => WebViewScreen(
-                htmlContent: responseData['data']),
+                htmlContent: responseData['data'],
+            apartment: widget.apartment,
+            fees: widget.fees,),
           ),
         ).then((paymentResult) {
           if (responseData == true) {
             print('Ödeme Başarılı');
+
           } else {
             print('Ödeme Başarısız: ${responseData['error']}');
           }
@@ -156,8 +163,6 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
             currency = currencyOptions.isNotEmpty ? currencyOptions[0] : '';
           });
 
-          print(
-              'Currency: $currency, Bank: $bank, Installments: $installmentOptions');
         } else {
           print('Bank bilgisi alınamadı veya başarı durumu false döndü.');
         }
@@ -182,7 +187,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
         backgroundColor: background,
         appBar: AppBar(
           backgroundColor: background,
-          toolbarHeight: 50,
+          toolbarHeight: 30,
           flexibleSpace: Container(
             color: primary,
             height: 50,
@@ -238,6 +243,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                             enabledBorder: enableBorder,
                             focusedBorder: focusBorder,
                           ),
+
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
@@ -303,28 +309,34 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           ),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: border,
-                                  labelStyle:
-                                      normalTextStyle.copyWith(color: primary),
-                                  labelText: 'CVV',
-                                  enabledBorder: enableBorder,
-                                  focusedBorder: focusBorder,
-                                ),
-                                obscureText: true,
-                                cursorColor: primary,
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
+                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: Focus(
+                                onFocusChange: (hasFocus) {
                                   setState(() {
-                                    cvv = value;
+                                    isCvvFocused = hasFocus;
                                   });
                                 },
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    border: border,
+                                    labelStyle: normalTextStyle.copyWith(color: primary),
+                                    labelText: 'CVV',
+                                    enabledBorder: enableBorder,
+                                    focusedBorder: focusBorder,
+                                  ),
+                                  obscureText: true,
+                                  cursorColor: primary,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      cvv = value;
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),
+
                         ],
                       ),
                       if (currency.isNotEmpty && bank.isNotEmpty) ...[
@@ -434,7 +446,8 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                           color: primary,
                           borderRadius: radius,
