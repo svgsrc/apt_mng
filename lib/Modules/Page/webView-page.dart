@@ -49,27 +49,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
           debugPrint('Error occurred on page: ${error.response?.statusCode}');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailPage(
-                apartment: widget.apartment,
-                fees: widget.fees,
-              ),
-            ),
-          ).then((_) => showFailureDialog());
+
         },
         onWebResourceError: (WebResourceError error) {
           print('Web Resource Error: ${error.description}');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailPage(
-                apartment: widget.apartment,
-                fees: widget.fees,
-              ),
-            ),
-          ).then((_) => showFailureDialog());
+
         },
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
