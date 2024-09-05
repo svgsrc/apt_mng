@@ -1,10 +1,9 @@
-
-class News{
+class News {
   final int id;
   final int hotelId;
   final String content;
-  final String startDate;
-  final String endDate;
+  final DateTime startDate;
+  final DateTime endDate;
 
   News({
     required this.id,
@@ -19,8 +18,12 @@ class News{
       id: json['ID'] ?? 0,
       hotelId: json['HOTELID'] ?? 0,
       content: json['CONTENT'] ?? '',
-      startDate: json['STARTDATE'] ?? '',
-      endDate: json['ENDDATE'] ?? '',
+      startDate: DateTime.parse(json['STARTDATE'] ?? ''),
+      endDate: DateTime.parse(json['ENDDATE'] ?? ''),
     );
+  }
+  @override
+  String toString() {
+    return 'News{id: $id, content: $content, startDate: $startDate, endDate: $endDate}';
   }
 }

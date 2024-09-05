@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:tuple/tuple.dart';
+import 'package:intl/intl.dart';
 
 class APIService {
   BehaviorSubject<List<Apartment>?> apartments$ = BehaviorSubject.seeded(null);
@@ -106,8 +107,8 @@ class APIService {
       "Object": "SP_MOBILE_APARTMENT_NEWS_LIST",
       "Parameters": {
         "HOTELID": hotelId,
-        "STARTDATE": startDate.toString(),
-        "ENDDATE": endDate.toString(),
+        "STARTDATE": DateFormat('d.M.yy').format(startDate),
+        "ENDDATE": DateFormat('d.M.yy').format(endDate),
       }
     };
 
@@ -126,9 +127,12 @@ class APIService {
           data[0].forEach((newsItem) {
             news.add(News.fromJson(newsItem));
           });
-          return news;
-        }
+          news$.add(news);
+
+        }else{
+          news$.add([]);
       }
+    }
     } catch (e) {
       print("Failed to upload news: $e");
     }
