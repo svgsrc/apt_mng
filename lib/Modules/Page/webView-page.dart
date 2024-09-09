@@ -42,18 +42,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       fees: widget.fees,
                     ),
               ),
-            ).then((_) => showSuccessDialog());
+            );
+
           }
         },
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
           debugPrint('Error occurred on page: ${error.response?.statusCode}');
-
+          showFailureDialog();
         },
         onWebResourceError: (WebResourceError error) {
-          print('Web Resource Error: ${error.description}');
-
+          debugPrint('Web Resource Error: ${error.description}');
+          showFailureDialog();
         },
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
@@ -111,7 +112,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   'assets/failure-animation.json',
                   repeat: false,
                   onLoaded: (composition) {
-                    Future.delayed(composition.duration * 2, () {
+                    Future.delayed(composition.duration * 1, () {
                       Navigator.of(context).pop();
                     });
                   },

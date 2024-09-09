@@ -13,7 +13,6 @@ class DetailPage extends StatefulWidget {
   final Apartment apartment;
   final List<Fee> fees;
 
-
   DetailPage({required this.apartment, required this.fees});
 
   @override
@@ -45,6 +44,11 @@ class _DetailPageState extends State<DetailPage> {
     return DateFormat('dd.MM.yyyy').format(parsedDate);
   }
 
+  double getTotalFeeAmount(List<Fee> fees) {
+    return fees.fold(0.0, (sum, fee) => sum + (fee.feeAmount ?? 0.0));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -52,7 +56,6 @@ class _DetailPageState extends State<DetailPage> {
     final apartmentBalance = widget.apartment.balance;
     final blockName = widget.apartment.blockName;
     final hotelId = widget.apartment.hotelId;
-
 
     return Scaffold(
       body: Stack(
@@ -75,7 +78,10 @@ class _DetailPageState extends State<DetailPage> {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(blockName: blockName, hotelId: hotelId),
+                            builder: (context) => HomePage(
+                              blockName: blockName,
+                              hotelId: hotelId,
+                            ),
                           ),
                         ),
                         color: appText,
@@ -109,14 +115,15 @@ class _DetailPageState extends State<DetailPage> {
                     Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
                     List<Fee> fees = feesMap[widget.apartment.id] ?? [];
 
+
+
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ProfileCard(apartment: widget.apartment),
-                          FeesList(fees: fees, apartment: widget.apartment,),
+                          FeesList(fees: fees, apartment: widget.apartment),
                           SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0),
-
                         ],
                       ),
                     );
@@ -125,21 +132,20 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
-          // if(apartmentBalance > 0 )
-          //   Positioned(
-          //     left: 0,
-          //     right: 0,
-          //     bottom: 40,
-          //     child: Container(
-          //       color:appText,
-          //       padding: const EdgeInsets.all(12.0),
-          //       child: Text(
-          //         "TOPLAM: ${1} TL",
-          //         style: boldTextStyle.copyWith(color: Colors.black),
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     ),
-          //   ),
+            // Positioned(
+            //   left: 0,
+            //   right: 0,
+            //   bottom: 40,
+            //   child: Container(
+            //     color: appText,
+            //     padding: const EdgeInsets.all(12.0),
+            //     child: Text(
+            //       "TOPLAM: ${getTotalFeeAmount(widget.fees).toStringAsFixed(2)} TL",
+            //       style: boldTextStyle.copyWith(color: Colors.black),
+            //       textAlign: TextAlign.center,
+            //     ),
+            //   ),
+            // ),
           if (apartmentBalance > 0)
             Positioned(
               left: 0,
@@ -160,4 +166,3 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
-

@@ -17,6 +17,7 @@ class ApartmentCard extends StatelessWidget {
     int? flatNumber;
     String contactName = apartment.contactName ?? 'Unknown';
     String plateNo = apartment.plateNo ?? 'N/A';
+    String phone = apartment.phone ?? '';
     int numberOfPeople = apartment.numberOfPeople ?? 0;
     String email = apartment.email ?? '';
     String photoUrl = apartment.photoUrl ?? '';
@@ -70,11 +71,11 @@ class ApartmentCard extends StatelessWidget {
                             children: [
                               photoUrl != null && photoUrl.isNotEmpty
                                   ? CircleAvatar(
-                                      backgroundImage: NetworkImage(photoUrl),
-                                      radius: 40,
-                                    )
+                                backgroundImage: NetworkImage(photoUrl),
+                                radius: 40,
+                              )
                                   : Icon(Icons.account_circle,
-                                      size: 80, color: Colors.grey[400]),
+                                  size: 80, color: Colors.grey[400]),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
@@ -83,6 +84,8 @@ class ApartmentCard extends StatelessWidget {
                                     Text(
                                       contactName,
                                       style: boldTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
                                     const SizedBox(height: 10),
                                     IntrinsicHeight(
@@ -90,16 +93,15 @@ class ApartmentCard extends StatelessWidget {
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               const Icon(Icons.people,
-                                                  color: Colors.black, size: 25,),
+                                                  color: Colors.black, size: 25),
                                               const SizedBox(width: 10),
                                               Text(
-                                                  numberOfPeople
-                                                      .toString(),
+                                                  numberOfPeople.toString(),
                                                   style: boldTextStyle.copyWith(fontSize: 18)),
                                             ],
                                           ),
@@ -112,15 +114,16 @@ class ApartmentCard extends StatelessWidget {
                                           if (plateNo != 'N/A')
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 const Icon(
                                                     Icons.car_rental_outlined,
                                                     color: Colors.black, size: 25),
                                                 const SizedBox(width: 10),
-                                                Text(plateNo,
+                                                Text(
+                                                    plateNo,
                                                     style: boldTextStyle.copyWith(fontSize: 18)),
                                               ],
                                             ),
@@ -132,79 +135,81 @@ class ApartmentCard extends StatelessWidget {
                                           vertical: 10.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                             children: [
                                               IconButton(
                                                 icon: Container(
                                                   decoration:
-                                                      const BoxDecoration(
+                                                  const BoxDecoration(
                                                     color: green,
                                                     shape: BoxShape.circle,
                                                   ),
                                                   padding:
-                                                      const EdgeInsets.all(6.0),
+                                                  const EdgeInsets.all(6.0),
                                                   child: const Icon(
                                                     Icons.phone,
                                                     color: Colors.white,
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  _makePhoneCall(
-                                                      apartment.phone);
+                                                  makePhoneCall(phone);
                                                 },
                                               ),
                                               const SizedBox(width: 10),
                                               IconButton(
                                                 icon: Container(
                                                   decoration:
-                                                      const BoxDecoration(
+                                                  const BoxDecoration(
                                                     color: blue,
                                                     shape: BoxShape.circle,
                                                   ),
                                                   padding:
-                                                      const EdgeInsets.all(6.0),
+                                                  const EdgeInsets.all(6.0),
                                                   child: const Icon(
                                                     Icons.email,
                                                     color: Colors.white,
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  _sendEmail(apartment.email);
+                                                  sendEmail(email);
                                                 },
                                               ),
                                               const SizedBox(width: 10),
                                               IconButton(
                                                 icon: Container(
                                                   decoration:
-                                                      const BoxDecoration(
+                                                  const BoxDecoration(
                                                     color: orange,
                                                     shape: BoxShape.circle,
                                                   ),
                                                   padding:
-                                                      const EdgeInsets.all(6.0),
+                                                  const EdgeInsets.all(6.0),
                                                   child: const Icon(
                                                     Icons.sms,
                                                     color: Colors.white,
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  _sendSMS(apartment.phone);
+                                                  sendSMS(phone);
                                                 },
                                               ),
                                             ],
                                           ),
                                           const SizedBox(width: 10),
-                                          if(apartment.balance != null && apartment.balance != 0)
+                                          if (apartment.balance != null &&
+                                              apartment.balance != 0)
                                             Text(
-                                            '${apartment.balance} TL',
-                                            style: boldTextStyle.copyWith(
-                                              color:  red,
+                                              '${apartment.balance} TL',
+                                              style: boldTextStyle.copyWith(
+                                                color: red,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
-                                          ),
                                         ],
                                       ),
                                     )
@@ -227,7 +232,7 @@ class ApartmentCard extends StatelessWidget {
           top: 5.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: cardColor,
               shape: BoxShape.circle,
             ),
@@ -246,7 +251,7 @@ class ApartmentCard extends StatelessWidget {
     );
   }
 
-  Future<void> _makePhoneCall(String phoneNumber) async {
+  Future<void> makePhoneCall(String phoneNumber) async {
     final url = 'tel:$phoneNumber';
     if (await canLaunch(url)) {
       await launch(url);
@@ -255,7 +260,7 @@ class ApartmentCard extends StatelessWidget {
     }
   }
 
-  Future<void> _sendEmail(String email) async {
+  Future<void> sendEmail(String email) async {
     final url = 'mailto:$email';
     if (await canLaunch(url)) {
       await launch(url);
@@ -264,7 +269,7 @@ class ApartmentCard extends StatelessWidget {
     }
   }
 
-  Future<void> _sendSMS(String phoneNumber) async {
+  Future<void> sendSMS(String phoneNumber) async {
     final url = 'sms:$phoneNumber';
     if (await canLaunch(url)) {
       await launch(url);

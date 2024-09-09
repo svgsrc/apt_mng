@@ -39,7 +39,7 @@ class QRScannerController {
       if (splitData.length == 2) {
         int? hotelId = int.tryParse(splitData[0]);
         String blockName = splitData[1];
-        print('Hotel ID: $hotelId, Block Name: $blockName');
+        debugPrint('Hotel ID: $hotelId, Block Name: $blockName');
 
         if (hotelId != null) {
           blockName$.add(blockName);
@@ -48,7 +48,7 @@ class QRScannerController {
           await fetchApartmentsAndNavigate(blockName, hotelId, context);
         }
       } else {
-        print('QR code format is incorrect: $qrText');
+        debugPrint('QR code format is incorrect: $qrText');
       }
     });
   }
@@ -64,7 +64,7 @@ class QRScannerController {
     try {
       navigateToPage(blockName, hotelId, context);
     } catch (e) {
-      print("Error fetching apartments: $e");
+      debugPrint("Error fetching apartments: $e");
     }
   }
 

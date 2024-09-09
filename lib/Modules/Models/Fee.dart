@@ -32,7 +32,7 @@ class Fee {
       flatId: json['FLATID'] ?? 0,
       feeTypeId: json['FEETYPEID'] ?? 0,
       feeDate: json['FEEDATE'] ?? '',
-      feeAmount: (json['FEEAMOUNT'] ?? 0.0).toDouble(),
+      feeAmount: json['FEEAMOUNT'] ?.toDouble(),
       paymentDate: json['PAYMENTDATE'] ?? '',
       paymentAmount: (json['PAYMENTAMOUNT'] ?? 0.0).toDouble(),
       description: json['DESCRIPTION'] ?? '',

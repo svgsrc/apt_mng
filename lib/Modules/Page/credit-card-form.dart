@@ -12,7 +12,7 @@ class CreditCardFormScreen extends StatefulWidget {
   final List<Fee> fees;
   final Apartment apartment;
 
-  CreditCardFormScreen({required this.fees, required this.apartment});
+  CreditCardFormScreen({super.key, required this.fees, required this.apartment});
 
   @override
   _CreditCardFormScreenState createState() => _CreditCardFormScreenState();
@@ -113,18 +113,18 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
           ),
         ).then((paymentResult) {
           if (responseData == true) {
-            print('Ödeme Başarılı');
+            debugPrint('Ödeme Başarılı');
 
           } else {
-            print('Ödeme Başarısız: ${responseData['error']}');
+            debugPrint('Ödeme Başarısız: ${responseData['error']}');
           }
         });
       } else {
-        print(
+        debugPrint(
             'Ödeme işleme başarısız oldu. Durum Kodu: ${response.statusCode}');
       }
     } catch (e) {
-      print('Ödeme işleme hatası: $e');
+      debugPrint('Ödeme işleme hatası: $e');
     }
   }
 
@@ -132,7 +132,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
     String binNumber = pan.substring(0, 6);
 
     if (!RegExp(r'^\d{6}$').hasMatch(binNumber)) {
-      print('Hata: Geçersiz BIN numarası formatı.');
+      debugPrint('Hata: Geçersiz BIN numarası formatı.');
       return;
     }
 
@@ -145,7 +145,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('Gelen veriler: $data');
+
 
         final bankInfo = data['bankInfo'];
         if (bankInfo != null && bankInfo['success'] == true) {
@@ -164,15 +164,15 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
           });
 
         } else {
-          print('Bank bilgisi alınamadı veya başarı durumu false döndü.');
+          debugPrint('Bank bilgisi alınamadı veya başarı durumu false döndü.');
         }
       } else {
         final errorData = jsonDecode(response.body);
-        print(
+      debugPrint(
             'BIN bilgileri alınamadı. Kod: ${response.statusCode}, Hata: ${errorData['error']}');
       }
     } catch (e) {
-      print('Hata: $e');
+      debugPrint('Hata: $e');
     }
   }
 
@@ -445,6 +445,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           },
                         ),
                       ),
+
                       Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),

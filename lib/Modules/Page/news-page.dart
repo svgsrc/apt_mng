@@ -37,20 +37,6 @@ class _NewsPageState extends State<NewsPage> {
     return Container(
         padding: EdgeInsets.only(top: topPadding),
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: background,
-            toolbarHeight: 25,
-            automaticallyImplyLeading: false,
-            flexibleSpace: Container(
-              color: primary,
-              height: 50,
-              child: Center(
-                child: Text('Etkinlikler',
-                    style:
-                        boldTextStyle.copyWith(color: appText, fontSize: 20)),
-              ),
-            ),
-          ),
           body: StreamBuilder(
             stream: apiService.news$.stream,
             builder: (context, snapshot) {

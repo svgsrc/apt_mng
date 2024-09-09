@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:clipboard/clipboard.dart';
 
 class ProfileCard extends StatelessWidget {
   final Apartment apartment;
@@ -34,52 +34,94 @@ class ProfileCard extends StatelessWidget {
               children: [
                 IntrinsicHeight(
                     child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    apartment.photoUrl != null && apartment.photoUrl.isNotEmpty
-                        ? CircleAvatar(
-                            backgroundImage: NetworkImage(apartment.photoUrl),
-                            radius: 40,
-                          )
-                        : Icon(Icons.account_circle,
-                            size: 80, color: Colors.grey[400]),
-                    const SizedBox(width: 10),
-                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (apartment.idNo != null &&
-                                apartment.idNo.isNotEmpty)
-                              const Text("KİMLİK NO:", style: boldTextStyle),
-                            const Text("OTURAN:", style: boldTextStyle),
-                            const Text("TELEFON:", style: boldTextStyle),
-                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              const Text("EV SAHİBİ:", style: boldTextStyle),
-                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              const Text("TELEFON:", style: boldTextStyle),
-                          ],
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (apartment.idNo != null &&
-                                apartment.idNo.isNotEmpty)
-                              Text(apartment.idNo, style: normalTextStyle),
-                            Text(apartment.contactName, style: normalTextStyle),
-                            Text(apartment.phone, style: normalTextStyle),
-                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              Text(apartment.ownerName, style: normalTextStyle),
-                            if (apartment.contactName.toLowerCase() != apartment.ownerName.toLowerCase())
-                              Text(apartment.ownerPhone,
-                                  style: normalTextStyle),
-                          ],
+                        apartment.photoUrl != null && apartment.photoUrl.isNotEmpty
+                            ? CircleAvatar(
+                          backgroundImage: NetworkImage(apartment.photoUrl),
+                          radius: 40,
                         )
+                            : Icon(Icons.account_circle,
+                            size: 80, color: Colors.grey[400]),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (apartment.idNo != null &&
+                                      apartment.idNo.isNotEmpty)
+                                    const Text("KİMLİK NO:", style: boldTextStyle),
+                                  const Text("OTURAN:", style: boldTextStyle),
+                                  const Text("TELEFON:", style: boldTextStyle),
+                                  if (apartment.contactName.toLowerCase() !=
+                                      apartment.ownerName.toLowerCase())
+                                    const Text("EV SAHİBİ:", style: boldTextStyle),
+                                  if (apartment.contactName.toLowerCase() !=
+                                      apartment.ownerName.toLowerCase())
+                                    const Text("TELEFON:", style: boldTextStyle),
+                                ],
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (apartment.idNo != null &&
+                                        apartment.idNo.isNotEmpty)
+                                      Text(apartment.idNo, style: normalTextStyle, overflow: TextOverflow.ellipsis),
+                                    Text(apartment.contactName, style: normalTextStyle, overflow: TextOverflow.ellipsis),
+                                    Text(apartment.phone, style: normalTextStyle, overflow: TextOverflow.ellipsis),
+                                    if (apartment.contactName.toLowerCase() !=
+                                        apartment.ownerName.toLowerCase())
+                                      Text(apartment.ownerName, style: normalTextStyle, overflow: TextOverflow.ellipsis),
+                                    if (apartment.contactName.toLowerCase() !=
+                                        apartment.ownerName.toLowerCase())
+                                      Row(
+                                        children: [
+                                             Text(apartment.ownerPhone,style: normalTextStyle,),
+                                          SizedBox(width: 5),
+                                          InkWell(
+                                            onTap: () {
+                                              FlutterClipboard.copy(apartment.ownerPhone);
+                                              showDialog(
+                                                barrierColor: Colors.transparent,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                      insetPadding: const EdgeInsets.all(5),
+                                                      backgroundColor: Colors.grey[850],
+                                                      content: SizedBox(
+                                                          height: 20,
+                                                          child: Center(
+                                                              child: Text(
+                                                                  "Numara kopyalandı!",
+                                                                  style: normalTextStyle.copyWith(
+                                                                      color:
+                                                                      appText)))));
+                                                },
+                                              );
+
+                                              Future.delayed(const Duration(seconds: 1), () {
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
+                                            child: const Icon(Icons.copy,
+                                                size: 17, color: Colors.black),
+                                          )
+                                        ],
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-                    )
-                  ],
-                )),
+                    )),
                 Divider(color: Colors.grey[400]),
                 IntrinsicHeight(
                   child: Row(
@@ -172,7 +214,7 @@ class ProfileCard extends StatelessWidget {
           top: 5.0,
           child: Container(
             padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: cardColor,
               shape: BoxShape.circle,
             ),

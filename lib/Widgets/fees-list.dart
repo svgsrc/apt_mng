@@ -36,7 +36,6 @@ class _FeesListState extends State<FeesList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (widget.fees.isNotEmpty)
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -292,7 +291,7 @@ class _FeesListState extends State<FeesList> {
                                           ),
                                         ),
                                         Text(
-                                          '${remainingAmount} TL',
+                                          '$remainingAmount TL',
                                           style: boldTextStyle.copyWith(
                                               fontSize: 14, color: red),
                                         ),

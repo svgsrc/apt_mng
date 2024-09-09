@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talya_flutter/Global/constants.dart';
-import 'package:talya_flutter/Modules/Page/news-page.dart';
-import 'package:talya_flutter/Service/api-service.dart';
+import 'package:talya_flutter/Modules/Page/qr-scanner-page.dart';
 import 'package:talya_flutter/Service/service-locator.dart';
 
 
@@ -25,8 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: background,
-        body: NewsPage(hotelId: 20854, startDate: '2024-01-01', endDate: '2025-01-01'),
-
+        body: QRScannerPage(),
     ),
     );
   }

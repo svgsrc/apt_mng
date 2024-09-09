@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
@@ -60,10 +61,10 @@ class APIService {
           apartments$.add([]);
         }
       } else {
-        print("HTTP Request failed with status: ${response.statusCode}");
+        debugPrint("HTTP Request failed with status: ${response.statusCode}");
       }
     } catch (e) {
-      print("Failed to upload apartments: $e");
+      debugPrint("Failed to upload apartments: $e");
     }
     return [];
   }
@@ -90,13 +91,21 @@ class APIService {
           data[0].forEach((fee) {
             fees.add(Fee.fromJson(fee));
           });
+
+
+          double totalFeeAmount = fees.fold(
+            0.0,
+                (previousValue, fee) => previousValue + (fee.feeAmount ?? 0.0),
+          );
+
+
           final currentFees = fees$.value;
           currentFees[apartmentId] = fees;
           fees$.add(currentFees);
         }
       }
     } catch (e) {
-      print("Failed to upload fees: $e");
+      debugPrint("Failed to upload fees: $e");
     }
     return [];
   }
@@ -134,7 +143,7 @@ class APIService {
       }
     }
     } catch (e) {
-      print("Failed to upload news: $e");
+      debugPrint("Failed to upload news: $e");
     }
     return [];
   }
