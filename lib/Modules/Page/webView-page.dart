@@ -25,36 +25,46 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController webController;
 
-  @override
   void initState() {
     super.initState();
+
     webController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
-        onUrlChange: (change)  {
-          if(change.url == 'https://vpos-demo.elektraweb.io/success') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    DetailPage(
-                      apartment: widget.apartment,
-                      fees: widget.fees,
-                    ),
-              ),
-            );
-
+        onUrlChange: (change) {
+          if (change.url == 'https://vpos-demo.elektraweb.io/success') {
+            if (mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(
+                    apartment: widget.apartment,
+                    fees: widget.fees,
+                  ),
+                ),
+              );
+            }
           }
         },
-        onPageStarted: (String url) {},
-        onPageFinished: (String url) {},
+        onPageStarted: (String url) {
+          debugPrint('Page started loading: $url');
+        },
+        onPageFinished: (String url) {
+          debugPrint('Page finished loading: $url');
+        },
         onHttpError: (HttpResponseError error) {
-          debugPrint('Error occurred on page: ${error.response?.statusCode}');
-          showFailureDialog();
+          debugPrint(
+              'HTTP Error occurred on page: ${error.response?.statusCode}');
+
+          if (mounted) {
+            showFailureDialog();
+          }
         },
         onWebResourceError: (WebResourceError error) {
           debugPrint('Web Resource Error: ${error.description}');
-          showFailureDialog();
+          if (mounted) {
+            showFailureDialog();
+          }
         },
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
@@ -82,13 +92,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   'assets/success-animation.json',
                   repeat: false,
                   onLoaded: (composition) {
-                    Future.delayed(composition.duration * 2, () {
+                    Future.delayed(composition.duration * 1, () {
                       Navigator.of(context).pop();
                     });
                   },
                 ),
                 SizedBox(height: 16.0),
-                Text('Ödemeniz başarıyla gerçekleşti', style: normalTextStyle.copyWith(fontSize: 16)),
+                Text('Ödemeniz başarıyla gerçekleşti',
+                    style: normalTextStyle.copyWith(fontSize: 16)),
               ],
             ),
           ),
@@ -118,7 +129,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   },
                 ),
                 SizedBox(height: 16.0),
-                Text('Ödemeniz gerçekleştirilemedi. Lütfen tekrar deneyin.', style: normalTextStyle.copyWith(fontSize: 16),),
+                Text(
+                  'Ödemeniz gerçekleştirilemedi. Lütfen tekrar deneyin.',
+                  style: normalTextStyle.copyWith(fontSize: 16),
+                ),
               ],
             ),
           ),
@@ -135,7 +149,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Container(
       padding: EdgeInsets.only(top: topPadding),
       child: Scaffold(
-
         body: WebViewWidget(
           controller: webController,
         ),
