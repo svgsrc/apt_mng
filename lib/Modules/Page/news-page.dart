@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:talya_flutter/Global/constants.dart';
 import 'package:get_it/get_it.dart';
+import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:talya_flutter/Widgets/news-list.dart';
 
@@ -26,7 +26,8 @@ class _NewsPageState extends State<NewsPage> {
   @override
   void initState() {
     super.initState();
-    apiService.fetchNews(widget.hotelId, DateTime.parse(widget.startDate), DateTime.parse(widget.endDate));
+    apiService.fetchNews(widget.hotelId, DateTime.parse(widget.startDate),
+        DateTime.parse(widget.endDate));
   }
 
   @override
@@ -60,7 +61,6 @@ class _NewsPageState extends State<NewsPage> {
                       return NewsList(news: news[index]);
                     },
                   ),
-
                 );
               }
             },

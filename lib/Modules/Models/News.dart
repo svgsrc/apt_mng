@@ -22,8 +22,5 @@ class News {
       endDate: DateTime.parse(json['ENDDATE'] ?? ''),
     );
   }
-  @override
-  String toString() {
-    return 'News{id: $id, content: $content, startDate: $startDate, endDate: $endDate}';
-  }
+
 }

@@ -3,8 +3,8 @@ import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/News.dart';
 import 'package:talya_flutter/Service/api-service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class NewsList extends StatefulWidget {
   final News news;
@@ -35,18 +35,22 @@ class _NewsListState extends State<NewsList> {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Icon(Icons.notifications, color: Colors.blue, size: 30),
                 const SizedBox(width: 10),
-                 Text(
+                Expanded(
+                  child: Text(
                     widget.news.content,
                     style: boldTextStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                    softWrap: true,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 10,
                   ),
-
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -55,16 +59,15 @@ class _NewsListState extends State<NewsList> {
               children: [
                 Text(
                   formatDate(widget.news.startDate.toString()),
-                  style: boldTextStyle.copyWith(fontSize: 12, ),
+                  style: boldTextStyle.copyWith(fontSize: 12),
                 ),
                 Text(
                   ' - ',
-                  style: boldTextStyle.copyWith(fontSize: 12,),
+                  style: boldTextStyle.copyWith(fontSize: 12),
                 ),
-
                 Text(
                   formatDate(widget.news.endDate.toString()),
-                  style: boldTextStyle.copyWith(fontSize: 12, ),
+                  style: boldTextStyle.copyWith(fontSize: 12),
                 ),
               ],
             ),

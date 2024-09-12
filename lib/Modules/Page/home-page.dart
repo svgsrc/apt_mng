@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talya_flutter/Global/constants.dart';
-import 'package:talya_flutter/Service/api-service.dart';
-import 'package:talya_flutter/Widgets/apartment-card.dart';
 import 'package:talya_flutter/Modules/Page/news-page.dart';
+import 'package:talya_flutter/Service/api-service.dart';
+
+import '../../Widgets/apartment-card.dart';
 
 class HomePage extends StatefulWidget {
   final String blockName;
@@ -25,60 +26,80 @@ class _HomePageState extends State<HomePage> {
     apiService.fetchApartments(widget.blockName, widget.hotelId);
   }
 
+  Future<void> refreshData() async {
+    await apiService.fetchApartments(widget.blockName, widget.hotelId);
+    await Future.delayed(Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final topPadding = mediaQuery.padding.top;
 
     return Container(
-        padding: EdgeInsets.only(top: topPadding),
-        child: DefaultTabController(
-          initialIndex: 0,
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: primary,
-              toolbarHeight: 70,
-              automaticallyImplyLeading: false,
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  StreamBuilder(
-                    stream: apiService.apartments$.stream,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return  Text('Loading...', style: boldTextStyle.copyWith(color: appText, fontSize: 20));
-                      }
-                      final apartments = snapshot.data!;
-                      final titleText =
-                          "${apartments.isNotEmpty ? apartments[0].name.toUpperCase() : ''} - ${widget.blockName.toUpperCase()}";
-                      return Text(
-                        titleText,
-                        textAlign: TextAlign.center,
-                        style: boldTextStyle.copyWith(
-                            color: appText, fontSize: 20),
-                      );
-                    },
-                  ),
-                  const TabBar(
-                    dividerColor: primary,
-                    indicatorColor: appText,
-                    tabs: [
-                      Tab(
-                        icon: Icon(Icons.apartment, color: Colors.white),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.notifications, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            body: TabBarView(
+      padding: EdgeInsets.only(top: topPadding),
+      child: DefaultTabController(
+        initialIndex: 0,
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: primary,
+            toolbarHeight: 70,
+            automaticallyImplyLeading: false,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  color: background,
+                StreamBuilder(
+                  stream: apiService.apartments$.stream,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Text('Loading...',
+                          style: boldTextStyle.copyWith(
+                              color: appText, fontSize: 20));
+                    }
+                    final apartments = snapshot.data!;
+                    final titleText =
+                        "${apartments.isNotEmpty ? apartments[0].name.toUpperCase() : ''} - ${widget.blockName.toUpperCase()}";
+                    return Text(
+                      titleText,
+                      textAlign: TextAlign.center,
+                      style:
+                          boldTextStyle.copyWith(color: appText, fontSize: 20),
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                const TabBar(
+                  dividerColor: primary,
+                  labelColor: primary,
+                  unselectedLabelColor: Colors.white,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                      color: appText,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  tabs: [
+                    Tab(
+                      icon: Icon(Icons.apartment),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.notifications),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              // Apartments Tab with RefreshIndicator
+              Container(
+                color: background,
+                child: RefreshIndicator(
+                  onRefresh: refreshData,
+                  color: primary,
+                  backgroundColor: background,
                   child: Column(
                     children: [
                       Expanded(
@@ -113,9 +134,14 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  color: background,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 15),
+                color: background,
+                child: RefreshIndicator(
+                  onRefresh: refreshData,
+                  color: primary,
+                  backgroundColor: background,
                   child: Column(
                     children: [
                       Expanded(
@@ -128,9 +154,11 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:talya_flutter/Global/constants.dart';
 import 'dart:convert';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:talya_flutter/Modules/Page/detail-page.dart';
+
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
-import 'package:lottie/lottie.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String htmlContent;
@@ -33,39 +33,24 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setNavigationDelegate(NavigationDelegate(
         onUrlChange: (change) {
           if (change.url == 'https://vpos-demo.elektraweb.io/success') {
-            if (mounted) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailPage(
-                    apartment: widget.apartment,
-                    fees: widget.fees,
-                  ),
-                ),
-              );
-            }
+            // Navigator.pop(context, [true]);
+          }
+          if (change.url == 'https://vpos-demo.elektraweb.io/fail') {
+            // Navigator.pop(context, [false]);
           }
         },
-        onPageStarted: (String url) {
-          debugPrint('Page started loading: $url');
-        },
+        onPageStarted: (String url) {},
         onPageFinished: (String url) {
-          debugPrint('Page finished loading: $url');
-        },
-        onHttpError: (HttpResponseError error) {
-          debugPrint(
-              'HTTP Error occurred on page: ${error.response?.statusCode}');
-
-          if (mounted) {
+          if (url == 'https://vpos-demo.elektraweb.io/success') {
+            Navigator.pop(context, [true]);
+            showSuccessDialog();
+          } else if (url == 'https://vpos-demo.elektraweb.io/fail') {
+            Navigator.pop(context, [false]);
             showFailureDialog();
           }
         },
-        onWebResourceError: (WebResourceError error) {
-          debugPrint('Web Resource Error: ${error.description}');
-          if (mounted) {
-            showFailureDialog();
-          }
-        },
+        onHttpError: (HttpResponseError error) {},
+        onWebResourceError: (WebResourceError error) {},
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
         },
@@ -78,7 +63,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   Future<void> showSuccessDialog() async {
-    return showDialog<void>(
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -109,7 +94,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   Future<void> showFailureDialog() async {
-    return showDialog<void>(
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -143,11 +128,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final topPadding = mediaQuery.padding.top;
-
-    return Container(
-      padding: EdgeInsets.only(top: topPadding),
+    return SafeArea(
       child: Scaffold(
         body: WebViewWidget(
           controller: webController,

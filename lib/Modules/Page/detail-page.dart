@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
 import 'package:talya_flutter/Service/api-service.dart';
-import 'package:get_it/get_it.dart';
 import 'package:talya_flutter/Widgets/fees-list.dart';
 import 'package:talya_flutter/Widgets/profile-card.dart';
 
@@ -25,18 +25,21 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    apiService.fetchApartments(
-        widget.apartment.blockName, widget.apartment.hotelId);
-    apiService.apartments$.listen((apartments) {
-      if (apartments != null && apartments.isNotEmpty) {
-        apiService.fetchFees(apartments.first.id, apartments.first.hotelId);
-      }
-    });
+    fetchData();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> fetchData() async {
+    await apiService.fetchApartments(
+        widget.apartment.blockName, widget.apartment.hotelId);
+    final apartments = await apiService.apartments$.first;
+    if (apartments != null && apartments.isNotEmpty) {
+      await apiService.fetchFees(apartments.first.id, apartments.first.hotelId);
+    }
+    setState(() {});
+  }
+
+  Future<void> refreshPage() async {
+    await fetchData();
   }
 
   String formatDate(String date) {
@@ -47,7 +50,6 @@ class _DetailPageState extends State<DetailPage> {
   double getTotalFeeAmount(List<Fee> fees) {
     return fees.fold(0.0, (sum, fee) => sum + (fee.feeAmount ?? 0.0));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,52 +102,44 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 automaticallyImplyLeading: false,
               ),
-              body: StreamBuilder(
-                stream: apiService.combinedStream$,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: primary),
-                    );
-                  } else if (!snapshot.hasData ||
-                      snapshot.data!.item1 == null ||
-                      snapshot.data!.item1!.isEmpty) {
-                    return const Center(child: Text('No apartments found.'));
-                  } else {
-                    Map<int, List<Fee>?> feesMap = snapshot.data!.item2 ?? {};
-                    List<Fee> fees = feesMap[widget.apartment.id] ?? [];
+              body: RefreshIndicator(
+                onRefresh: refreshPage,
+                color: primary,
+                backgroundColor: background,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: StreamBuilder(
+                    stream: apiService.combinedStream$,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(color: primary),
+                        );
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.item1 == null ||
+                          snapshot.data!.item1!.isEmpty) {
+                        return const Center(
+                            child: Text('No apartments found.'));
+                      } else {
+                        Map<int, List<Fee>?> feesMap =
+                            snapshot.data!.item2 ?? {};
+                        List<Fee> fees = feesMap[widget.apartment.id] ?? [];
 
-
-
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProfileCard(apartment: widget.apartment),
-                          FeesList(fees: fees, apartment: widget.apartment),
-                          SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0),
-                        ],
-                      ),
-                    );
-                  }
-                },
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProfileCard(apartment: widget.apartment),
+                            FeesList(fees: fees, apartment: widget.apartment),
+                            SizedBox(height: apartmentBalance > 0 ? 80.0 : 0.0),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
               ),
             ),
           ),
-            // Positioned(
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 40,
-            //   child: Container(
-            //     color: appText,
-            //     padding: const EdgeInsets.all(12.0),
-            //     child: Text(
-            //       "TOPLAM: ${getTotalFeeAmount(widget.fees).toStringAsFixed(2)} TL",
-            //       style: boldTextStyle.copyWith(color: Colors.black),
-            //       textAlign: TextAlign.center,
-            //     ),
-            //   ),
-            // ),
           if (apartmentBalance > 0)
             Positioned(
               left: 0,

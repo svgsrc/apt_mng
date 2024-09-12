@@ -17,16 +17,16 @@ class APIService {
   late final Stream<List<Apartment>?> apartmentsBroadcast;
   late final Stream<Map<int, List<Fee>?>> feesBroadcast;
   late final Stream<Tuple2<List<Apartment>?, Map<int, List<Fee>?>?>>
-  combinedStream$;
+      combinedStream$;
 
   APIService() {
     apartmentsBroadcast = apartments$.stream.asBroadcastStream();
     feesBroadcast = fees$.stream.asBroadcastStream();
 
     combinedStream$ = Rx.combineLatest2(apartments$, fees$,
-            (List<Apartment>? apartments, Map<int, List<Fee>?>? fees) {
-          return Tuple2(apartments, fees);
-        }).asBroadcastStream();
+        (List<Apartment>? apartments, Map<int, List<Fee>?>? fees) {
+      return Tuple2(apartments, fees);
+    }).asBroadcastStream();
   }
 
   Future<List<Apartment>> fetchApartments(String blockName, int hotelId) async {
@@ -92,13 +92,6 @@ class APIService {
             fees.add(Fee.fromJson(fee));
           });
 
-
-          double totalFeeAmount = fees.fold(
-            0.0,
-                (previousValue, fee) => previousValue + (fee.feeAmount ?? 0.0),
-          );
-
-
           final currentFees = fees$.value;
           currentFees[apartmentId] = fees;
           fees$.add(currentFees);
@@ -110,7 +103,8 @@ class APIService {
     return [];
   }
 
-  Future<List<News>> fetchNews(int hotelId, DateTime startDate, DateTime endDate) async {
+  Future<List<News>> fetchNews(
+      int hotelId, DateTime startDate, DateTime endDate) async {
     final Map<String, dynamic> requestBody = {
       "Action": "Execute",
       "Object": "SP_MOBILE_APARTMENT_NEWS_LIST",
@@ -137,11 +131,10 @@ class APIService {
             news.add(News.fromJson(newsItem));
           });
           news$.add(news);
-
-        }else{
+        } else {
           news$.add([]);
+        }
       }
-    }
     } catch (e) {
       debugPrint("Failed to upload news: $e");
     }
