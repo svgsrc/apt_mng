@@ -26,45 +26,41 @@ class _NewsPageState extends State<NewsPage> {
   @override
   void initState() {
     super.initState();
-    apiService.fetchNews(widget.hotelId, DateTime.parse(widget.startDate),
-        DateTime.parse(widget.endDate));
+    // apiService.fetchNews(widget.hotelId, DateTime.parse(widget.startDate),
+    //     DateTime.parse(widget.endDate));
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final topPadding = mediaQuery.padding.top;
-
-    return Container(
-        padding: EdgeInsets.only(top: topPadding),
+    return SafeArea(
         child: Scaffold(
-          body: StreamBuilder(
-            stream: apiService.news$.stream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: primary),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
-                  child: Text('Duyuru Bulunamadı', style: normalTextStyle),
-                );
-              } else {
-                final news = snapshot.data!;
-                news.sort((a, b) => b.startDate.compareTo(a.startDate));
+      body: StreamBuilder(
+          stream: apiService.news$.stream,
+          builder: (context, snapshot) {
+            if (apiService.news$.value == null) {
+              return const Center(
+                child: CircularProgressIndicator(color: primary),
+              );
+            } else if (apiService.news$.value!.isEmpty) {
+              return const Center(
+                child: Text('Duyuru Bulunamadı', style: normalTextStyle),
+              );
+            }
+            final news = apiService.news$.value;
 
-                return Container(
-                  color: background,
-                  child: ListView.builder(
-                    itemCount: news.length,
-                    itemBuilder: (context, index) {
-                      return NewsList(news: news[index]);
-                    },
-                  ),
-                );
-              }
-            },
-          ),
-        ));
+            apiService.news$.value!
+                .sort((a, b) => b.startDate.compareTo(a.startDate));
+
+            return Container(
+              color: background,
+              child: ListView.builder(
+                itemCount: news!.length,
+                itemBuilder: (context, index) {
+                  return NewsList(news: news[index]);
+                },
+              ),
+            );
+          }),
+    ));
   }
 }

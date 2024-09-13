@@ -8,7 +8,7 @@ class Fee {
   final String paymentDate;
   final double paymentAmount;
   final String description;
-  final String uid;
+  late final String feeUid;
   bool isCompleted;
 
   Fee({
@@ -21,7 +21,7 @@ class Fee {
     required this.paymentDate,
     required this.paymentAmount,
     required this.description,
-    required this.uid,
+    required this.feeUid,
     this.isCompleted = false,
   });
 
@@ -32,11 +32,11 @@ class Fee {
       flatId: json['FLATID'] ?? 0,
       feeTypeId: json['FEETYPEID'] ?? 0,
       feeDate: json['FEEDATE'] ?? '',
-      feeAmount: json['FEEAMOUNT'] ?.toDouble(),
+      feeAmount: json['FEEAMOUNT']?.toDouble(),
       paymentDate: json['PAYMENTDATE'] ?? '',
       paymentAmount: (json['PAYMENTAMOUNT'] ?? 0.0).toDouble(),
       description: json['DESCRIPTION'] ?? '',
-      uid: json['UID'] ?? '',
+      feeUid: json['FEEUID'] ?? '',
     );
   }
 }

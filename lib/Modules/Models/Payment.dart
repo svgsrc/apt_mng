@@ -10,7 +10,6 @@ class PaymentModel {
     'lastName': '',
     'cvv': '',
     'paymentAmount': '0.00',
-    'feeUid': '',
     'isCvvFocused': false,
     'selectedInstallments': '',
     'currency': '',

@@ -33,10 +33,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setNavigationDelegate(NavigationDelegate(
         onUrlChange: (change) {
           if (change.url == 'https://vpos-demo.elektraweb.io/success') {
-            // Navigator.pop(context, [true]);
+            Navigator.pop(context, [true]);
           }
           if (change.url == 'https://vpos-demo.elektraweb.io/fail') {
-            // Navigator.pop(context, [false]);
+            Navigator.pop(context, [false]);
           }
         },
         onPageStarted: (String url) {},

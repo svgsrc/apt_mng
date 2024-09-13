@@ -35,7 +35,6 @@ class _DetailPageState extends State<DetailPage> {
     if (apartments != null && apartments.isNotEmpty) {
       await apiService.fetchFees(apartments.first.id, apartments.first.hotelId);
     }
-    setState(() {});
   }
 
   Future<void> refreshPage() async {

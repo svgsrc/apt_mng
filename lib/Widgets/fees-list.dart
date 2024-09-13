@@ -16,14 +16,14 @@ class FeesList extends StatefulWidget {
 }
 
 class _FeesListState extends State<FeesList> {
-  List<bool> _isExpandedList = [];
+  List<bool> isExpandedList = [];
 
   @override
   void initState() {
     super.initState();
     widget.fees.sort((a, b) =>
         DateTime.parse(b.feeDate).compareTo(DateTime.parse(a.feeDate)));
-    _isExpandedList = List<bool>.filled(widget.fees.length, false);
+    isExpandedList = List<bool>.filled(widget.fees.length, false);
     widget.fees.removeWhere((fee) => fee.paymentAmount == fee.feeAmount);
   }
 
@@ -36,53 +36,51 @@ class _FeesListState extends State<FeesList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Tarih',
-                        style: boldTextStyle.copyWith(fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      'Tarih',
+                      style: boldTextStyle.copyWith(fontSize: 14),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Açıklama',
-                        style: boldTextStyle.copyWith(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Açıklama',
+                      style: boldTextStyle.copyWith(fontSize: 14),
+                      textAlign: TextAlign.start,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Tutar',
-                        style: boldTextStyle.copyWith(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      'Tutar',
+                      style: boldTextStyle.copyWith(fontSize: 14),
+                      textAlign: TextAlign.start,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Ödeme',
-                        style: boldTextStyle.copyWith(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      'Ödeme',
+                      style: boldTextStyle.copyWith(fontSize: 14),
+                      textAlign: TextAlign.start,
                     ),
-                  ],
-                ),
-                Container(
-                    child: myDivider),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Container(child: myDivider),
+            ],
           ),
+        ),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -107,9 +105,9 @@ class _FeesListState extends State<FeesList> {
                 ),
                 child: InkWell(
                   borderRadius: radius,
-                  onTap:  () {
+                  onTap: () {
                     setState(() {
-                      _isExpandedList[index] = !_isExpandedList[index];
+                      isExpandedList[index] = !isExpandedList[index];
                     });
                   },
                   child: Column(
@@ -228,7 +226,7 @@ class _FeesListState extends State<FeesList> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CreditCardFormScreen(
-                                                        apartment: widget.apartment,
+                                                    apartment: widget.apartment,
                                                     fees: widget.fees,
                                                   ),
                                                 ),
@@ -255,8 +253,8 @@ class _FeesListState extends State<FeesList> {
                                 ),
                               ],
                             ),
-                            if (!_isExpandedList[
-                                index]  && fee.description.isNotEmpty )
+                            if (!isExpandedList[index] &&
+                                fee.description.isNotEmpty)
                               Icon(
                                 Icons.keyboard_arrow_down,
                                 color: isPaymentIncomplete ? red : Colors.black,
@@ -265,8 +263,7 @@ class _FeesListState extends State<FeesList> {
                           ],
                         ),
                       ),
-                      if (_isExpandedList[
-                          index] && fee.description.isNotEmpty)
+                      if (isExpandedList[index] && fee.description.isNotEmpty)
                         Column(
                           children: [
                             Padding(
@@ -296,7 +293,8 @@ class _FeesListState extends State<FeesList> {
                                               fontSize: 14, color: red),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(left: 13),
+                                          margin:
+                                              const EdgeInsets.only(left: 13),
                                           decoration: BoxDecoration(
                                             color: green,
                                             borderRadius: radius,
@@ -308,7 +306,7 @@ class _FeesListState extends State<FeesList> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CreditCardFormScreen(
-                                                        apartment: widget.apartment,
+                                                    apartment: widget.apartment,
                                                     fees: widget.fees,
                                                   ),
                                                 ),

@@ -24,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     apiService.fetchApartments(widget.blockName, widget.hotelId);
+    apiService.fetchNews(widget.hotelId, DateTime.parse('2024-01-01'),
+        DateTime.parse('2025-01-01'));
   }
 
   Future<void> refreshData() async {

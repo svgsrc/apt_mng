@@ -9,20 +9,26 @@ import 'package:talya_flutter/Modules/Models/Apartment.dart';
 import 'package:talya_flutter/Modules/Models/Fee.dart';
 import 'package:talya_flutter/Modules/Models/Payment.dart';
 import 'package:talya_flutter/Modules/Page/webView-page.dart';
+import 'package:talya_flutter/Service/api-service.dart';
 
 class CreditCardFormScreen extends StatefulWidget {
   final List<Fee> fees;
   final Apartment apartment;
 
-  CreditCardFormScreen(
-      {super.key, required this.fees, required this.apartment});
+  CreditCardFormScreen({
+    super.key,
+    required this.apartment,
+    required this.fees,
+  });
 
   @override
   _CreditCardFormScreenState createState() => _CreditCardFormScreenState();
 }
 
 class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
+  APIService apiService = APIService();
   final PaymentModel paymentModel = PaymentModel();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -43,12 +49,11 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
               paymentDate: DateTime.now().toString(),
               description: '',
               paymentAmount: 0.0,
-              uid: '',
+              feeUid: '',
             ));
-
-    paymentModel.updateData('feeUid', fetchedFee.uid);
     paymentModel.updateData(
         'paymentAmount', fetchedFee.feeAmount.toStringAsFixed(2));
+    paymentModel.formData$.value['feeUid'] = fetchedFee.feeUid;
   }
 
   String generateHashData(Map<String, dynamic> formData) {
@@ -60,7 +65,8 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
   }
 
   Future<Map<String, dynamic>> sendPaymentData(
-      Map<String, dynamic> formData) async {
+    Map<String, dynamic> formData,
+  ) async {
     final paymentData = {
       "hotelId": widget.apartment.hotelId,
       "feeUid": formData['feeUid'],
@@ -158,7 +164,11 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    final mediaQuery = MediaQuery.of(context);
+    final topPadding = mediaQuery.padding.top;
+
+    return Container(
+      padding: EdgeInsets.only(top: topPadding),
       child: Scaffold(
         backgroundColor: background,
         appBar: AppBar(
@@ -252,13 +262,11 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                                     focusedBorder: focusBorder,
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      final names = value.split(' ');
-                                      paymentModel.updateData(
-                                          'firstName', names[0]);
-                                      paymentModel.updateData('lastName',
-                                          names.length > 1 ? names[1] : '');
-                                    });
+                                    final names = value.split(' ');
+                                    paymentModel.updateData(
+                                        'firstName', names[0]);
+                                    paymentModel.updateData('lastName',
+                                        names.length > 1 ? names[1] : '');
                                   },
                                 ),
                               ),
@@ -279,15 +287,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                                         ),
                                         keyboardType: TextInputType.datetime,
                                         onChanged: (value) {
-                                          setState(() {
-                                            final parts = value.split('/');
-                                            if (parts.length == 2) {
-                                              paymentModel.updateData(
-                                                  'expiryMonth', parts[0]);
-                                              paymentModel.updateData(
-                                                  'expiryYear', parts[1]);
-                                            }
-                                          });
+                                          final parts = value.split('/');
+                                          if (parts.length == 2) {
+                                            paymentModel.updateData(
+                                                'expiryMonth', parts[0]);
+                                            paymentModel.updateData(
+                                                'expiryYear', parts[1]);
+                                          }
                                         },
                                       ),
                                     ),
@@ -468,9 +474,15 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                                             ),
                                           ),
                                         ).then((paymentResult) {
-                                          if (paymentResult == true) {
+                                          if (paymentResult[0] == true) {
                                             debugPrint('Ödeme başarılı.');
                                             Navigator.pop(context, [true]);
+                                            // apiService.fetchFees(
+                                            //     widget.apartment.id,
+                                            //     widget.apartment.hotelId);
+                                          } else if (paymentResult[0] ==
+                                              false) {
+                                            debugPrint('Ödeme başarısız.');
                                           }
                                         });
                                       }

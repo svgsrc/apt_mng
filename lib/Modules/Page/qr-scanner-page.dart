@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:talya_flutter/Modules/Service/qr-scanner-service.dart';
 import 'package:talya_flutter/Global/constants.dart';
 import 'package:talya_flutter/Modules/Page/home-page.dart';
+import 'package:talya_flutter/Modules/Service/qr-scanner-service.dart';
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -60,7 +60,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
-                      child: StreamBuilder<bool>(
+                      child: StreamBuilder(
                         stream: qrScannerController.pause$.stream,
                         builder: (context, snapshot) {
                           bool isPaused = snapshot.data ?? false;
@@ -88,7 +88,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
-                      child: StreamBuilder<bool>(
+                      child: StreamBuilder(
                         stream: qrScannerController.flash$.stream,
                         builder: (context, snapshot) {
                           bool isFlashOn = snapshot.data ?? false;
